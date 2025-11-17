@@ -1,2 +1,2 @@
-# software-design-project
-Fundementals of Engineering Honors Software Design Project repo.
+# FEH Software Design Project
+This is the repository for our software design project.

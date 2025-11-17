@@ -1,0 +1,21 @@
+# build directories
+build/
+bin/
+
+# library directories
+lib/
+simulator_libraries/
+
+# library objects
+*.o
+*.a
+*.so
+*.dll
+
+.DS_Store
+Thumbs.db
+
+# common IDE filespaces
+.vscode/
+.idea/
+*.swp

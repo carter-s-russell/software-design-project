@@ -47,3 +47,7 @@ bool Pawn::isValidMove(int curX, int curY, int toX, int toY, Board* board) {
     // base case, move is not valid
     return false;
 }
+
+void Pawn::setHasMoved() {
+    m_hasMoved = true;
+}

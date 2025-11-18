@@ -24,6 +24,7 @@ public:
 
     // function overrides
     virtual bool isValidMove(int curX, int curY, int toX, int toY, Board* board) override;
+    virtual void setHasMoved() override;
 };
 
 #endif // PAWN_H

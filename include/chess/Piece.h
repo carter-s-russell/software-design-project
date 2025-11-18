@@ -43,6 +43,13 @@ public:
      */
     virtual bool isValidMove(int curX, int curY, int toX, int toY, Board* board) = 0;
 
+    /**
+     * @brief Change the boolean for hasMoved for a Piece, if it has said boolean
+     */
+    virtual void setHasMoved() {
+        // do nothing by default
+    }
+
     // -- Regular functions --
 
     /**

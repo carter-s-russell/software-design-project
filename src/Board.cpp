@@ -5,7 +5,6 @@
 // include all chess pieces
 #include "chess/Pawn.h"
 
-const int SQUARE_SIZE = 30;
 const int BOARD_X_OFFSET = 0;
 const int BOARD_Y_OFFSET = 0;
 const unsigned int LIGHT_SQUARE_COLOR = WHITE;
@@ -15,6 +14,18 @@ const unsigned int DARK_SQUARE_COLOR = SLATEGRAY;
 
 Board::Board() {
     setupBoard();
+}
+
+void Board::move(int curX, int curY, int toX, int toY) {
+    // get piece being moved
+    Piece* movingPiece = getPieceAt(curX, curY);
+
+    // basic piece moving logic
+    m_grid[toY][toX] = std::move(m_grid[curY][curX]);
+
+    // advanced logic
+    movingPiece->setHasMoved();
+    // future enpassant, castling, promotion logic to go here
 }
 
 void Board::draw() {

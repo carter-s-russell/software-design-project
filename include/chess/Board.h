@@ -11,6 +11,8 @@
 #include <memory>
 #include "chess/Piece.h"
 
+const int SQUARE_SIZE = 30;
+
 class Board {
 private:
     /**
@@ -39,14 +41,23 @@ public:
     }
 
     /**
-     * @brief Manually sets a piece on the board.
-     * @param x The x-coordinate (0-7).
-     * @param y The y-coordinate (0-7).
-     * @param piece The std::unique_ptr<Piece> to place.
+     * @brief Manually sets a piece on the board
+     * @param x The x-coordinate (0-7)
+     * @param y The y-coordinate (0-7)
+     * @param piece The std::unique_ptr<Piece> to place
      */
     void setPieceAt(int x, int y, std::unique_ptr<Piece> piece) {
         m_grid[y][x] = std::move(piece);
     }
+
+    /**
+     * @brief Moves a piece from one square to another
+     * @param curX X position of the piece to be moved
+     * @param curY Y position of the piece to be moved
+     * @param toX X position of the square to be moved to
+     * @param toY Y position of the square to be moved to
+     */
+    void move(int curX, int curY, int toX, int toY);
 
     /**
      * @brief Draws the board and its pieces

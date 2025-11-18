@@ -1,18 +1,79 @@
-#include "FEHLCD.h"
-#include "FEHUtility.h" 
-#include "chess/Board.h" 
-
 /**
  * @file
  * @brief Main entry point for the chess game.
  * @author Carter Russell
- * @date 2025-11-17
+ * @date 2025-11-18
  */
 
+#include "FEHLCD.h"
+#include "FEHUtility.h" 
+#include "chess/Board.h" 
+#include <iostream>
+
+enum class GameState {
+    AWAITING_SELECTION,
+    PIECE_SELECTED
+};
+
 int main() {
+    // initialize board
     Board chessBoard;
 
+    // initialize current state and position of piece to be selected
+    GameState currentState = GameState::AWAITING_SELECTION;
+    int selectedX = -1; // invalid value as a placeholder 
+    int selectedY = -1;
+
+    // track if the screen was already pressed on the previous frame
+    bool wasTouchPressed = false;
+
+    // lambda function for pixel to coordinate
+    auto pixelToCoord = [](int pixel) {
+        return pixel / SQUARE_SIZE;
+    };
+
     while (true) {
+        // checking for user input
+        int pixelX, pixelY;
+
+        // current state of the touch
+        bool isTouchPressed = LCD.Touch(&pixelX, &pixelY);
+
+        // this now only runs on the frame that the touch happened
+        if (isTouchPressed && !wasTouchPressed) {
+            int gridX = pixelToCoord(pixelX);
+            int gridY = pixelToCoord(pixelY);
+
+            if ((currentState == GameState::AWAITING_SELECTION) && gridX < 8) {
+                std::cout << "select: " << gridX << "," << gridY << std::endl;
+
+                if (chessBoard.getPieceAt(gridX, gridY) != nullptr) {
+                    selectedX = gridX;
+                    selectedY = gridY;
+
+                    // flip current state
+                    currentState = GameState::PIECE_SELECTED;
+                }
+
+                // show valid moves logic
+                
+            } else if ((currentState == GameState::PIECE_SELECTED)) {
+                // state must flip no matter what input is given
+                currentState = GameState::AWAITING_SELECTION;
+
+                // allows for clicking outside of board to reset current move
+                if (gridX < 8) {
+                    std::cout << "move to: " << gridX << "," << gridY << std::endl;
+                    Piece* selectedPiece = chessBoard.getPieceAt(selectedX, selectedY);
+                    bool validMove = selectedPiece->isValidMove(selectedX, selectedY, gridX, gridY, &chessBoard);
+                    std::cout << "Valid move: " << validMove << std::endl;
+                    if (validMove) {
+                        chessBoard.move(selectedX, selectedY, gridX, gridY);
+                    }
+                }
+            }
+        }
+
         // sets the background to black
         LCD.Clear(BLACK);
 
@@ -21,6 +82,9 @@ int main() {
 
         // updates screen
         LCD.Update();
+
+        // updating frame check
+        wasTouchPressed = isTouchPressed;
 
         // prevents cpu from running at 100%
         Sleep(0.01);

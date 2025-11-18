@@ -11,6 +11,12 @@
 #include "FEHImages.h"
 
 /**
+ * @brief Forward-declaration of Board class
+ * Needed since Board includes Piece, but isValidMove needs some reference to Board
+ */
+class Board;
+
+/**
  * @brief Describes the color of a chess piece.
  */
 enum class PieceColor {
@@ -35,7 +41,7 @@ public:
      * @brief Checks if a move is pseudo-legal (ignores check)
      * @return true if the move follows the piece's rules
      */
-    virtual bool isValidMove(int curX, int curY, int toX, int toY) = 0;
+    virtual bool isValidMove(int curX, int curY, int toX, int toY, Board* board) = 0;
 
     // -- Regular functions --
 

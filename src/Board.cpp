@@ -57,6 +57,9 @@ void Board::setupBoard() {
         }
     }
 
-    // example initialization of piece
-    m_grid[6][4] = std::make_unique<Pawn>(PieceColor::LIGHT);
+    // initialize pawns
+    for (int x = 0; x < 8; x++) {
+        m_grid[6][x] = std::make_unique<Pawn>(PieceColor::LIGHT);
+        m_grid[1][x] = std::make_unique<Pawn>(PieceColor::DARK);
+    }
 }

@@ -39,6 +39,16 @@ public:
     }
 
     /**
+     * @brief Manually sets a piece on the board.
+     * @param x The x-coordinate (0-7).
+     * @param y The y-coordinate (0-7).
+     * @param piece The std::unique_ptr<Piece> to place.
+     */
+    void setPieceAt(int x, int y, std::unique_ptr<Piece> piece) {
+        m_grid[y][x] = std::move(piece);
+    }
+
+    /**
      * @brief Draws the board and its pieces
      */
     void draw();

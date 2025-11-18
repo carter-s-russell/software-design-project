@@ -1,4 +1,4 @@
-#include "chess/board.h"
+#include "chess/Board.h"
 #include <cassert>
 
 /**

@@ -1,6 +1,6 @@
 #include "FEHLCD.h"
 #include "FEHUtility.h" 
-#include "chess/board.h" 
+#include "chess/Board.h" 
 
 /**
  * @file
@@ -10,24 +10,21 @@
  */
 
 int main() {
-    // Clear the screen to a background color
-    LCD.Clear(BLACK);
-    
-    // Create a board object
-    Board myBoard;
-    
-    // Call a function from your library
-    myBoard.draw();
+    Board chessBoard;
 
-    // Write text from the simulator library
-    LCD.SetFontColor(WHITE);
-    LCD.WriteLine("Hello Chess!");
+    while (true) {
+        // sets the background to black
+        LCD.Clear(BLACK);
 
-    // Update the screen to show changes
-    LCD.Update();
+        // draws the board
+        chessBoard.draw();
 
-    // Wait 3 seconds
-    Sleep(3.0);
+        // updates screen
+        LCD.Update();
+
+        // prevents cpu from running at 100%
+        Sleep(0.01);
+    }
 
     return 0;
 }

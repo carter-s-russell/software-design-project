@@ -55,7 +55,7 @@ int main() {
                     currentState = GameState::PIECE_SELECTED;
                 }
 
-                // show valid moves logic
+                // TODO: show valid moves logic
                 
             } else if ((currentState == GameState::PIECE_SELECTED)) {
                 // state must flip no matter what input is given

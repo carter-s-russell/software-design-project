@@ -4,6 +4,7 @@
 
 // include all chess pieces
 #include "chess/Pawn.h"
+#include "chess/King.h"
 
 const int BOARD_X_OFFSET = 0;
 const int BOARD_Y_OFFSET = 0;
@@ -73,4 +74,9 @@ void Board::setupBoard() {
         m_grid[6][x] = std::make_unique<Pawn>(PieceColor::LIGHT);
         m_grid[1][x] = std::make_unique<Pawn>(PieceColor::DARK);
     }
+    
+    // initialize kings
+    m_grid[7][4] = std::make_unique<King>(PieceColor::LIGHT);
+    m_grid[0][3] = std::make_unique<King>(PieceColor::DARK);
+
 }

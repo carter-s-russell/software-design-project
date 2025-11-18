@@ -43,8 +43,9 @@ int main() {
         if (isTouchPressed && !wasTouchPressed) {
             int gridX = pixelToCoord(pixelX);
             int gridY = pixelToCoord(pixelY);
+            bool validGrid = (gridX >= 0) && (gridX < 8) && (gridY >= 0) && (gridY < 8);
 
-            if ((currentState == GameState::AWAITING_SELECTION) && gridX < 8) {
+            if ((currentState == GameState::AWAITING_SELECTION) && validGrid) {
                 std::cout << "select: " << gridX << "," << gridY << std::endl;
 
                 if (chessBoard.getPieceAt(gridX, gridY) != nullptr) {
@@ -62,7 +63,7 @@ int main() {
                 currentState = GameState::AWAITING_SELECTION;
 
                 // allows for clicking outside of board to reset current move
-                if (gridX < 8) {
+                if (validGrid) {
                     std::cout << "move to: " << gridX << "," << gridY << std::endl;
                     Piece* selectedPiece = chessBoard.getPieceAt(selectedX, selectedY);
                     bool validMove = selectedPiece->isValidMove(selectedX, selectedY, gridX, gridY, &chessBoard);

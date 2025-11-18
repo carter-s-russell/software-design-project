@@ -49,6 +49,7 @@ set(CHESS_SOURCES
     "src/Board.cpp"
     "src/Piece.cpp"
     "src/Pawn.cpp"
+    "src/King.cpp"
     # Add new files like "src/Rook.cpp" here as you create them
 )
 

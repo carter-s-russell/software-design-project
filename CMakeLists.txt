@@ -14,13 +14,27 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # Put compiled libraries (like libchess.a) in a 'lib' folder inside 'build'.
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-# --- 3. Find System Graphics Libraries (for FEH library) ---
-# Find the OpenGL and X11 libraries that tigr.c depends on.
-find_package(OpenGL REQUIRED)
-find_package(X11 REQUIRED)
+# --- 3. Find System Graphics Libraries (Cross-Platform) ---
+if(WIN32)
+    # --- WINDOWS ---
+    # Windows uses native OpenGL and GDI (no X11 or GLX needed)
+    find_package(OpenGL REQUIRED)
+    set(FEH_SYSTEM_LIBS OpenGL::GL)
 
-# Store the found system libraries in a variable for easy use.
-set(FEH_SYSTEM_LIBS OpenGL::GL OpenGL::GLX X11::X11)
+elseif(APPLE)
+    # --- MACOS ---
+    # macOS uses Cocoa frameworks
+    find_package(OpenGL REQUIRED)
+    find_library(COCOA_LIB Cocoa)
+    set(FEH_SYSTEM_LIBS OpenGL::GL ${COCOA_LIB})
+
+else()
+    # --- LINUX ---
+    # Linux needs OpenGL, GLX, and X11
+    find_package(OpenGL REQUIRED)
+    find_package(X11 REQUIRED)
+    set(FEH_SYSTEM_LIBS OpenGL::GL OpenGL::GLX X11::X11)
+endif()
 
 # --- 4. Define the FEH Class Library (feh_lib) ---
 # Create the 'feh_lib' library by compiling all the C/C++ files

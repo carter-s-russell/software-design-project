@@ -19,8 +19,9 @@ int main() {
     // initialize board
     Board chessBoard;
 
-    // initialize current state and position of piece to be selected
+    // initialize current state, turn, and position of piece to be selected
     GameState currentState = GameState::AWAITING_SELECTION;
+    PieceColor currentTurn = PieceColor::LIGHT;
     int selectedX = -1; // invalid value as a placeholder 
     int selectedY = -1;
 
@@ -46,9 +47,11 @@ int main() {
             bool validGrid = (gridX >= 0) && (gridX < 8) && (gridY >= 0) && (gridY < 8);
 
             if ((currentState == GameState::AWAITING_SELECTION) && validGrid) {
-                std::cout << "select: " << gridX << "," << gridY << std::endl;
+                // std::cout << "select: " << gridX << "," << gridY << std::endl;
+                Piece* selectedPiece = chessBoard.getPieceAt(gridX, gridY);
 
-                if (chessBoard.getPieceAt(gridX, gridY) != nullptr) {
+                // selects piece if the selected square is a piece of the color of the current turn
+                if (selectedPiece != nullptr && selectedPiece->getColor() == currentTurn) {
                     selectedX = gridX;
                     selectedY = gridY;
 
@@ -64,12 +67,15 @@ int main() {
 
                 // allows for clicking outside of board to reset current move
                 if (validGrid) {
-                    std::cout << "move to: " << gridX << "," << gridY << std::endl;
+                    // std::cout << "move to: " << gridX << "," << gridY << std::endl;
                     Piece* selectedPiece = chessBoard.getPieceAt(selectedX, selectedY);
                     bool validMove = selectedPiece->isValidMove(selectedX, selectedY, gridX, gridY, &chessBoard);
-                    std::cout << "Valid move: " << validMove << std::endl;
+                    // std::cout << "Valid move: " << validMove << std::endl;
                     if (validMove) {
                         chessBoard.move(selectedX, selectedY, gridX, gridY);
+
+                        // flip turn using ternary operator
+                        currentTurn = (currentTurn == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;
                     }
                 }
             }
@@ -80,6 +86,17 @@ int main() {
 
         // draws the board
         chessBoard.draw();
+
+        // temporary code to write turn order to screen
+        if (currentTurn == PieceColor::LIGHT) {
+            LCD.SetFontColor(WHITE);
+            LCD.WriteAt("LIGHT", 250, 50);
+        } else {
+            LCD.SetFontColor(WHITE);
+            LCD.WriteAt("DARK", 250, 50);
+
+        }
+
 
         // updates screen
         LCD.Update();

@@ -85,27 +85,6 @@ Once you have saved your changes, follow these steps to commit them to your bran
     git push -u origin <your-branch-name>
     ```
 
-## Commit Message Guidelines
-
-Follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) standard. 
-
-Your commit message header should follow this format:
-`<type>(<scope>): <subject>`
-
-* **Type:** `feat` (new feature), `fix` (bug fix), `docs` (documentation), `style` (formatting), `refactor`, `test`, `chore` (build/tool changes).
-* **Scope (optional):** The module or part of the code affected (e.g., `auth`, `parser`).
-* **Subject:** A short, imperative-tense description (e.g., "add login button" not "added login button").
-
-**Good Examples:**
-* `feat(auth): add password reset endpoint`
-* `fix(parser): correct handling of empty strings`
-* `docs(contributing): add DoxyGen examples`
-
-**Bad Examples:**
-* `fixed a bug`
-* `updated code`
-* `stuff`
-
 ### 3. Merging to Main (Pull/Merge Requests)
 
 Once your code is pushed to your branch, it needs to be reviewed by your teammate before it joins the `main` codebase.
@@ -126,3 +105,24 @@ Once your code is pushed to your branch, it needs to be reviewed by your teammat
 4.  **Merge:**
     * Once given the go-ahead, click the "Merge" button.
     * This will automatically merge your branch into `main`.
+
+## Commit Message Guidelines
+
+Follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) standard. 
+
+Your commit message header should follow this format:
+`<type>(<scope>): <subject>`
+
+* **Type:** `feat` (new feature), `fix` (bug fix), `docs` (documentation), `style` (formatting), `refactor`, `test`, `chore` (build/tool changes).
+* **Scope (optional):** The module or part of the code affected (e.g., `auth`, `parser`).
+* **Subject:** A short, imperative-tense description (e.g., "add login button" not "added login button").
+
+**Good Examples:**
+* `feat(auth): add password reset endpoint`
+* `fix(parser): correct handling of empty strings`
+* `docs(contributing): add DoxyGen examples`
+
+**Bad Examples:**
+* `fixed a bug`
+* `updated code`
+* `stuff`

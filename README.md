@@ -11,57 +11,60 @@ These steps will clone the repository and download the required class libraries.
 
 1.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/carter-s-russell/software-design-project.git
+    git clone <your-repo-url>
     cd software-design-project
     ```
 
 2.  **Download Simulator Libraries:**
-    This project depends on the `simulator_libraries` provided by your class. A `Makefile` is included in the root of this project to download them for you.
+    This project depends on the `simulator_libraries` provided by the class. A `Makefile` is included to download them for you.
 
-    Run the following command from the root directory (`SDP/`):
-    ```bash
-    make
-    ```
-    This will create a `simulator_libraries/` folder. This folder is in the `.gitignore` and will not be committed to the repository.
+    * **Linux / macOS:**
+        ```bash
+        make
+        ```
+    * **Windows:**
+        ```bash
+        mingw32-make
+        ```
+    *(This will create a `simulator_libraries/` folder. This folder is ignored by Git.)*
 
 ### 2. Building the Project
 
-We use `CMake` to build the project. All build commands should be run from a separate `build/` directory.
+We use `CMake` to build the project.
 
 1.  **Create and Enter the Build Directory:**
-    From the root directory, run:
     ```bash
     mkdir build
     cd build
     ```
 
-2.  **Configure the Project (Run CMake):**
-    This command tells CMake to read your `CMakeLists.txt` file and generate the build files.
+2.  **Configure the Project:**
+    This generates the necessary build files for your operating system.
     ```bash
     cmake ..
     ```
 
-3.  **Compile the Code (Run Make):**
-    This will compile all your code in `src/`, your tests, and the class libraries, creating the final executables.
+3.  **Compile the Code:**
+    This command automatically runs the correct build tool (Make, MinGW, etc.) for your system.
     ```bash
-    make
+    cmake --build .
     ```
 
 ### 3. Running Your Code
 
 The compiled programs will be placed inside the `build/bin/` directory.
 
-* **To Run the Main Chess Game:**
+* **Linux / macOS:**
     ```bash
     ./bin/chess_app
     ```
 
-* **To Run Your Tests:**
-    From inside the `build/` directory, you can run:
+* **Windows:**
+    ```powershell
+    .\bin\chess_app.exe
+    ```
+
+* **To Run Tests:**
     ```bash
     ctest
-    ```
-    Or, you can run the test executable directly:
-    ```bash
-    ./bin/run_tests
     ```

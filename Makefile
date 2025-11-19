@@ -2,17 +2,12 @@ GITBINARY := git
 PINGURL := google.com
 LIBRARYREPO := simulator_libraries
 
-# --- ADD THIS LINE ---
-# Paste the full 40-character commit hash you want to use here.
-# I'm using the one from your last 'git log' as an example.
-LIBRARY_COMMIT_HASH := 2c225814e1b7d40ffd4f55da92164d1c7717f528
-# ---------------------
-
 ifeq ($(OS),Windows_NT)	
 	SHELL := CMD
 endif
 
 all: update
+# remove the make command, so this file just downloads the simulator_libraries
 
 update:
 ifeq ($(OS),Windows_NT)	
@@ -29,17 +24,14 @@ ifeq ($(OS),Windows_NT)
 		( if exist "$(LIBRARYREPO)" \
 		( \
 			cd $(LIBRARYREPO) && \
-			$(GITBINARY) fetch origin && \
-			$(GITBINARY) checkout $(LIBRARY_COMMIT_HASH) && \
+			$(GITBINARY) stash && \
+			$(GITBINARY) pull && \
 			cd .. \
 		) \
 		else \
 		( \
 			$(GITBINARY) config --global http.sslVerify false  && \
-			$(GITBINARY) clone https://code.osu.edu/fehelectronics/proteus_software/$(LIBRARYREPO).git && \
-			cd $(LIBRARYREPO) && \
-			$(GITBINARY) checkout $(LIBRARY_COMMIT_HASH) && \
-			cd .. \
+			$(GITBINARY) clone https://code.osu.edu/fehelectronics/proteus_software/$(LIBRARYREPO).git \
 		) \
 		) \
 	) 
@@ -51,14 +43,11 @@ else
 	else \
 		if [ -d "$(LIBRARYREPO)" ]; then \
 			cd $(LIBRARYREPO) ; \
-			$(GITBINARY) fetch origin ; \
-      		$(GITBINARY) checkout $(LIBRARY_COMMIT_HASH) ; \
+			$(GITBINARY) stash ; \
+      		$(GITBINARY) pull ; \
       		cd .. ; \
 		else \
       		$(GITBINARY) clone https://code.osu.edu/fehelectronics/proteus_software/$(LIBRARYREPO).git ; \
-			cd $(LIBRARYREPO) ; \
-			$(GITBINARY) checkout $(LIBRARY_COMMIT_HASH) ; \
-			cd .. ; \
 		fi \
 	fi \
 

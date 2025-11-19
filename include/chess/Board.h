@@ -26,6 +26,15 @@ private:
      * @brief Sets all the pieces to their starting position
      */
     void setupBoard();
+
+    /**
+     * @brief Member variables to keep track of the position of each king
+     * Initialized to the starting square of the king
+     */
+    int m_lightKingPosX = 4;
+    int m_lightKingPosY = 7;
+    int m_darkKingPosX = 3;
+    int m_darkKingPosY = 0;
 public:
     /**
      * @brief Construct a new Board object and set up the pieces 
@@ -63,6 +72,13 @@ public:
      * @brief Draws the board and its pieces
      */
     void draw();
+
+    /**
+     * @brief Intended to be called after a move is made, checks if there is a check present on the current board
+     * @param currentTurn The color of the piece that just moved
+     * @return true if there is a check present, false otherwise
+     */
+    bool inCheck(PieceColor currentTurn);
 };
 
 #endif // BOARD_H

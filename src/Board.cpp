@@ -27,6 +27,18 @@ void Board::move(int curX, int curY, int toX, int toY) {
     // advanced logic
     movingPiece->setHasMoved();
     // future enpassant, castling, promotion logic to go here
+
+    // move light king pos
+    if (curX == m_lightKingPosX && curY == m_lightKingPosY) {
+        m_lightKingPosX = toX;
+        m_lightKingPosY = toY;
+    }
+
+    // move dark king pos
+    if (curX == m_darkKingPosX && curY == m_darkKingPosY) {
+        m_darkKingPosX = toX;
+        m_darkKingPosY = toY;
+    }
 }
 
 void Board::draw() {
@@ -56,6 +68,27 @@ void Board::draw() {
             }
         }
     }
+}
+
+bool Board::inCheck(PieceColor currentTurn) {
+    // getting opposite king pos
+    int oppKingPosX = (currentTurn == PieceColor::LIGHT) ? m_darkKingPosX : m_lightKingPosX;
+    int oppKingPosY = (currentTurn == PieceColor::LIGHT) ? m_darkKingPosY : m_lightKingPosY;
+
+    for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < 8; x++) {
+            // getting Piece at current square
+            Piece* piece = m_grid[y][x].get();
+
+            // checking if the square is not nullptr and if it can attack the opposite king
+            if (piece && piece->isValidMove(x, y, oppKingPosX, oppKingPosY, this)) { 
+                return true;
+            }
+        }
+    }
+
+    // base case
+    return false;
 }
 
 // -- Private Member Functions --

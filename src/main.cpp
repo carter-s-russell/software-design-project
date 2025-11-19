@@ -90,13 +90,20 @@ int main() {
         // temporary code to write turn order to screen
         if (currentTurn == PieceColor::LIGHT) {
             LCD.SetFontColor(WHITE);
+            LCD.WriteAt("Turn:", 250, 25);
             LCD.WriteAt("LIGHT", 250, 50);
         } else {
             LCD.SetFontColor(WHITE);
+            LCD.WriteAt("Turn:", 250, 25);
             LCD.WriteAt("DARK", 250, 50);
-
         }
 
+        // temporary code to test for checks
+        PieceColor oppCol = (currentTurn == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;
+        if (chessBoard.inCheck(oppCol)) {
+            LCD.SetFontColor(WHITE);
+            LCD.WriteAt("Check!", 250, 100);
+        }
 
         // updates screen
         LCD.Update();

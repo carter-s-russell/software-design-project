@@ -18,3 +18,4 @@ Piece::Piece(PieceColor color, const char* filename) : m_color(color) {
 void Piece::draw(int x, int y) {
     m_image.Draw(x, y);
 }
+

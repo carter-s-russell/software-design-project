@@ -31,15 +31,22 @@ private:
      * @brief Member variables to keep track of the position of each king
      * Initialized to the starting square of the king
      */
-    int m_lightKingPosX = 4;
-    int m_lightKingPosY = 7;
-    int m_darkKingPosX = 3;
-    int m_darkKingPosY = 0;
+    int m_lightKingPosX;
+    int m_lightKingPosY;
+    int m_darkKingPosX;
+    int m_darkKingPosY;
+
 public:
     /**
      * @brief Construct a new Board object and set up the pieces 
      */
     Board();
+
+    /**
+     * @brief Sets up all the pieces according to a given FEN position
+     * @param fen A Forsyth–Edwards Notation for the desired position
+     */
+    void setupBoard(const std::string& fen);
 
     /**
      * @brief Gets the piece at a specific coordinate
@@ -79,6 +86,18 @@ public:
      * @return true if there is a check present, false otherwise
      */
     bool inCheck(PieceColor currentTurn);
+
+    /**
+     * @brief Checks if a valid move avoids moving into check 
+     * uses the same params as isValidMove, because only that function will call it
+     * @return true if the move does avoid check, false otherwise
+     */
+    bool avoidsCheck(int curX, int curY, int toX, int toY);
+
+    /**
+     * @brief Checks if position of king needs to be updated
+     */
+    void updateKingPos(int curX, int curY, int toX, int toY);
 };
 
 #endif // BOARD_H

@@ -16,6 +16,10 @@ Pawn::Pawn(PieceColor color)
 }
 
 bool Pawn::isValidMove(int curX, int curY, int toX, int toY, Board* board) {
+    bool validMove = false;
+    bool avoidCheck = false;
+
+    // general information about the move
     bool sameFile = (curX == toX);
     bool adjFile = (std::abs(curX - toX) == 1);
     int deltaRank = curY - toY;
@@ -24,28 +28,33 @@ bool Pawn::isValidMove(int curX, int curY, int toX, int toY, Board* board) {
 
     // check for 1 rank forward
     if (sameFile && (deltaRank == direction) && (pieceAtTarget == nullptr)) {
-        return true;
+        validMove = true;
     }
 
     // check for 2 rank forward
     if (sameFile && (deltaRank == 2 * direction) && (pieceAtTarget == nullptr) && !m_hasMoved) {
         // check for square between
         // LIGHT is toY+1, and vice versa, so direction works perfectly
-        return (board->getPieceAt(toX, toY + direction) == nullptr);
+        validMove = (board->getPieceAt(toX, toY + direction) == nullptr);
     }
 
     // check for diagonal capture
     if (adjFile && (deltaRank == direction) && (pieceAtTarget != nullptr)) {
-        return (pieceAtTarget->getColor() != m_color);
+        validMove = (pieceAtTarget->getColor() != m_color);
     }
 
     // TODO: check for enpassant
     if ( false ) {
-        return true;
+        validMove = true;
+    }
+
+    // make sure move does not cause a check
+    if (validMove) {
+        avoidCheck = board->avoidsCheck(curX, curY, toX, toY);
     }
 
     // base case, move is not valid
-    return false;
+    return validMove && avoidCheck;
 }
 
 void Pawn::setHasMoved() {

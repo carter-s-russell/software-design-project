@@ -16,6 +16,9 @@ King::King(PieceColor color)
 }
 
 bool King::isValidMove(int curX, int curY, int toX, int toY, Board* board) {
+    bool validMove = false;
+    bool avoidCheck = false;
+
     // pointer to the piece at the target space
     Piece* pieceAtTarget = board->getPieceAt(toX, toY);
 
@@ -25,16 +28,21 @@ bool King::isValidMove(int curX, int curY, int toX, int toY, Board* board) {
 
     // if the king is trying to move to an empty space or a space with an opposite color piece
     if (oneSpace && ((pieceAtTarget == nullptr) || pieceAtTarget->getColor() != m_color)) {
-        return true;
+        validMove = true;
     }
 
     // TODO: add castling
     if (false) {
-        return true;
+        validMove = true;
     }
 
-    // base case
-    return false;
+    // make sure move does not cause a check
+    if (validMove) {
+        avoidCheck = board->avoidsCheck(curX, curY, toX, toY);
+    }
+
+    // must be a valid psuedo-move and avoid any checks to be a valid move
+    return validMove && avoidCheck;
 }
 
 void King::setHasMoved() {

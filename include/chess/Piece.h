@@ -28,6 +28,7 @@ class Piece {
 protected:
     PieceColor m_color;
     FEHImage m_image;
+
 public:
     // Constructor to set the piece's color
     Piece(PieceColor color, const char* filename);

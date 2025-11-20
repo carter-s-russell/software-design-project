@@ -85,7 +85,7 @@ public:
      * @param currentTurn The color of the piece that just moved
      * @return true if there is a check present, false otherwise
      */
-    bool inCheck(PieceColor currentTurn);
+    bool isCheck(PieceColor currentTurn);
 
     /**
      * @brief Checks if a valid move avoids moving into check 

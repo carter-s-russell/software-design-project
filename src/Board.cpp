@@ -115,7 +115,7 @@ void Board::draw() {
     }
 }
 
-bool Board::inCheck(PieceColor currentTurn) {
+bool Board::isCheck(PieceColor currentTurn) {
     // getting opposite king pos
     int oppKingPosX = (currentTurn == PieceColor::LIGHT) ? m_darkKingPosX : m_lightKingPosX;
     int oppKingPosY = (currentTurn == PieceColor::LIGHT) ? m_darkKingPosY : m_lightKingPosY;
@@ -195,8 +195,8 @@ bool Board::avoidsCheck(int curX, int curY, int toX, int toY) {
 
     // check to see if there are any checks present
     // uses the opposite team's color to test for the current team being in check
-    bool check = inCheck(oppTurn);
-    std::cout << check << std::endl;
+    bool check = isCheck(oppTurn);
+    // std::cout << check << std::endl;
 
     // move piece back
     m_grid[curY][curX] = std::move(m_grid[toY][toX]);

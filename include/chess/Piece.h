@@ -39,8 +39,14 @@ public:
     // -- Virtual functions -- To be implemented by subclasses
     
     /**
-     * @brief Checks if a move is pseudo-legal (ignores check)
-     * @return true if the move follows the piece's rules
+     * @brief Checks if the move is valid and avoids moving into any checks
+     * @param curX The current X position of the piece 
+     * @param curY The current Y position of the piece 
+     * @param toX The X position of the desired move
+     * @param toY The Y position of the desired move
+     * @param checkSafety If the function should check if the move avoids check or not 
+     * @param board A pointer to the chess board 
+     * @return True if the move is valid, false otherwise 
      */
     virtual bool isValidMove(int curX, int curY, int toX, int toY, bool checkSafety, Board* board) = 0;
 
@@ -54,12 +60,19 @@ public:
     // -- Regular functions --
 
     /**
-     * @brief Tells the FEH library how to draw this piece
-     * @param x The top-left corner X pos
-     * @param y The top-left corner Y pos
+     * @brief Draws the Piece's image at the coordinates
+     * @param x The X coordinate for the top left of the image 
+     * @param y The Y coordinate for the top left of the image 
      */
-    void draw(int x, int y);
+    void draw(int x, int y) {
+        m_image.Draw(x, y);
+    }
 
+
+    /**
+     * @brief Get the color of the piece
+     * @return The color of the piece as a PieceColor enum member
+     */
     PieceColor getColor() const { return m_color; }
 };
 

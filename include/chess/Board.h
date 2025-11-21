@@ -102,12 +102,21 @@ public:
     /**
      * @brief Checks if a valid move avoids moving into check 
      * uses the same params as isValidMove, because only that function will call it
+     * @param curX The current X position of the piece
+     * @param curY The current Y position of the piece
+     * @param toX The desired X position of the piece
+     * @param toY The desired Y position of the piece
      * @return true if the move does avoid check, false otherwise
      */
     bool avoidsCheck(int curX, int curY, int toX, int toY);
 
     /**
-     * @brief Checks if position of king needs to be updated
+     * @brief Checks if position of king needs to be updated by giving the current and
+     * to positions of the latest move
+     * @param curX The current X position of the piece
+     * @param curY The current Y position of the piece
+     * @param toX The desired X position of the piece
+     * @param toY The desired Y position of the piece
      */
     void updateKingPos(int curX, int curY, int toX, int toY);
 };

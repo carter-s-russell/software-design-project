@@ -43,7 +43,7 @@ add_library(feh_lib
     "simulator_libraries/FEHLCD.cpp"
     "simulator_libraries/FEHRandom.cpp"
     "simulator_libraries/FEHSD.cpp"
-    "simulator_libraries/tigr.c"
+    "simulator_libraries/tigr.cpp"
     "simulator_libraries/FEHUtility.cpp"
     "simulator_libraries/FEHImages.cpp"
 )

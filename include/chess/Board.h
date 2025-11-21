@@ -36,6 +36,11 @@ private:
     int m_darkKingPosX;
     int m_darkKingPosY;
 
+    /**
+     * @brief Member vairables for images of move indicators
+     */
+    FEHImage m_indicatorFreeSpace = "res/move_indicator.png";
+    FEHImage m_indicatorCapture = "res/capture_indicator.png";
 public:
     /**
      * @brief Construct a new Board object and set up the pieces 
@@ -79,6 +84,13 @@ public:
      * @brief Draws the board and its pieces
      */
     void draw();
+
+    /**
+     * @brief Draws the available move indicators after the pieces have been drawn
+     * @param x X position of selected piece
+     * @param y Y position of selected piece
+     */
+    void drawAvailableMoves(int x, int y);
 
     /**
      * @brief Intended to be called after a move is made, checks if there is a check present on the current board

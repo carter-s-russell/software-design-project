@@ -115,6 +115,30 @@ void Board::draw() {
     }
 }
 
+void Board::drawAvailableMoves(int curX, int curY) {
+    // get pointer to selected piece
+    Piece* selectedPiece = m_grid[curY][curX].get();
+
+    // loop through all 64 squares
+    for (int y = 0; y < 8; ++y) {
+        for (int x = 0; x < 8; ++x) {
+            if (selectedPiece->isValidMove(curX, curY, x, y, this)) {
+                // calculate top left pixel coordinate for this square
+                int pixelX = BOARD_X_OFFSET + (x * SQUARE_SIZE);
+                int pixelY = BOARD_Y_OFFSET + (y * SQUARE_SIZE);
+
+                // test if there is a piece at the desired square
+                if (m_grid[y][x].get()) {
+                    m_indicatorCapture.Draw(pixelX,pixelY);
+                } else {
+                    m_indicatorFreeSpace.Draw(pixelX,pixelY);
+                }
+
+            }
+        }
+    }
+}
+
 bool Board::isCheck(PieceColor currentTurn) {
     // getting opposite king pos
     int oppKingPosX = (currentTurn == PieceColor::LIGHT) ? m_darkKingPosX : m_lightKingPosX;
@@ -127,6 +151,7 @@ bool Board::isCheck(PieceColor currentTurn) {
 
             // checking if the square is not nullptr and if it can attack the opposite king
             if (piece && piece->isValidMove(x, y, oppKingPosX, oppKingPosY, this)) { 
+                std::cout << "Piece giving check: x=" << x << ", y=" << y << std::endl;
                 return true;
             }
         }

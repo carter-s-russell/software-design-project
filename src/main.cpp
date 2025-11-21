@@ -47,7 +47,7 @@ int main() {
             bool validGrid = (gridX >= 0) && (gridX < 8) && (gridY >= 0) && (gridY < 8);
 
             if ((currentState == GameState::AWAITING_SELECTION) && validGrid) {
-                // std::cout << "select: " << gridX << "," << gridY << std::endl;
+                std::cout << "select: " << gridX << "," << gridY << std::endl;
                 Piece* selectedPiece = chessBoard.getPieceAt(gridX, gridY);
 
                 // selects piece if the selected square is a piece of the color of the current turn
@@ -58,9 +58,6 @@ int main() {
                     // flip current state
                     currentState = GameState::PIECE_SELECTED;
                 }
-
-                // TODO: show valid moves logic
-                
             } else if ((currentState == GameState::PIECE_SELECTED)) {
                 // state must flip no matter what input is given
                 currentState = GameState::AWAITING_SELECTION;
@@ -86,6 +83,11 @@ int main() {
 
         // draws the board
         chessBoard.draw();
+
+        // check if the available move indicators need to be drawn
+        if (currentState == GameState::PIECE_SELECTED) {
+            chessBoard.drawAvailableMoves(selectedX, selectedY);
+        }
 
         // temporary code to write turn order to screen
         if (currentTurn == PieceColor::LIGHT) {

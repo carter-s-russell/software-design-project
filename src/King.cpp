@@ -15,9 +15,9 @@ King::King(PieceColor color)
     // empty constructor body
 }
 
-bool King::isValidMove(int curX, int curY, int toX, int toY, Board* board) {
+bool King::isValidMove(int curX, int curY, int toX, int toY, bool checkSafety, Board* board) {
     bool validMove = false;
-    bool avoidCheck = false;
+    bool avoidCheck = !checkSafety; // if we don't check for checks, this will be true
 
     // pointer to the piece at the target space
     Piece* pieceAtTarget = board->getPieceAt(toX, toY);
@@ -37,7 +37,7 @@ bool King::isValidMove(int curX, int curY, int toX, int toY, Board* board) {
     }
 
     // make sure move does not cause a check
-    if (validMove) {
+    if (checkSafety && validMove) {
         avoidCheck = board->avoidsCheck(curX, curY, toX, toY);
     }
 

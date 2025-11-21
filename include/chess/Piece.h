@@ -42,7 +42,7 @@ public:
      * @brief Checks if a move is pseudo-legal (ignores check)
      * @return true if the move follows the piece's rules
      */
-    virtual bool isValidMove(int curX, int curY, int toX, int toY, Board* board) = 0;
+    virtual bool isValidMove(int curX, int curY, int toX, int toY, bool checkSafety, Board* board) = 0;
 
     /**
      * @brief Change the boolean for hasMoved for a Piece, if it has said boolean

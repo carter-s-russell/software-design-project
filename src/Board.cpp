@@ -122,7 +122,7 @@ void Board::drawAvailableMoves(int curX, int curY) {
     // loop through all 64 squares
     for (int y = 0; y < 8; ++y) {
         for (int x = 0; x < 8; ++x) {
-            if (selectedPiece->isValidMove(curX, curY, x, y, this)) {
+            if (selectedPiece->isValidMove(curX, curY, x, y, true, this)) {
                 // calculate top left pixel coordinate for this square
                 int pixelX = BOARD_X_OFFSET + (x * SQUARE_SIZE);
                 int pixelY = BOARD_Y_OFFSET + (y * SQUARE_SIZE);
@@ -150,8 +150,10 @@ bool Board::isCheck(PieceColor currentTurn) {
             Piece* piece = m_grid[y][x].get();
 
             // checking if the square is not nullptr and if it can attack the opposite king
-            if (piece && piece->isValidMove(x, y, oppKingPosX, oppKingPosY, this)) { 
-                std::cout << "Piece giving check: x=" << x << ", y=" << y << std::endl;
+            // using the false flag for checkSafety because it does not matter if an attacking piece would cause a check,
+            // the move is still invalid
+            if (piece && piece->isValidMove(x, y, oppKingPosX, oppKingPosY, false, this)) { 
+                // std::cout << "Piece giving check: x=" << x << ", y=" << y << " | to: x=" << oppKingPosX << ", y=" << oppKingPosY << std::endl;
                 return true;
             }
         }
@@ -234,7 +236,7 @@ bool Board::avoidsCheck(int curX, int curY, int toX, int toY) {
     }
 
     // potentially update king pos
-    updateKingPos(curX, curY, toX, toY);
+    updateKingPos(toX, toY, curX, curY);
 
     return !check;
 }

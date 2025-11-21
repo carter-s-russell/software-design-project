@@ -47,7 +47,7 @@ int main() {
             bool validGrid = (gridX >= 0) && (gridX < 8) && (gridY >= 0) && (gridY < 8);
 
             if ((currentState == GameState::AWAITING_SELECTION) && validGrid) {
-                std::cout << "select: " << gridX << "," << gridY << std::endl;
+                // std::cout << "select: " << gridX << "," << gridY << std::endl;
                 Piece* selectedPiece = chessBoard.getPieceAt(gridX, gridY);
 
                 // selects piece if the selected square is a piece of the color of the current turn
@@ -66,7 +66,7 @@ int main() {
                 if (validGrid) {
                     // std::cout << "move to: " << gridX << "," << gridY << std::endl;
                     Piece* selectedPiece = chessBoard.getPieceAt(selectedX, selectedY);
-                    bool validMove = selectedPiece->isValidMove(selectedX, selectedY, gridX, gridY, &chessBoard);
+                    bool validMove = selectedPiece->isValidMove(selectedX, selectedY, gridX, gridY, true, &chessBoard);
                     // std::cout << "Valid move: " << validMove << std::endl;
                     if (validMove) {
                         chessBoard.move(selectedX, selectedY, gridX, gridY);

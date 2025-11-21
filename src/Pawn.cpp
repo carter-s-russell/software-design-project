@@ -15,9 +15,9 @@ Pawn::Pawn(PieceColor color)
     // empty constructor body
 }
 
-bool Pawn::isValidMove(int curX, int curY, int toX, int toY, Board* board) {
+bool Pawn::isValidMove(int curX, int curY, int toX, int toY, bool checkSafety, Board* board) {
     bool validMove = false;
-    bool avoidCheck = false;
+    bool avoidCheck = !checkSafety; // if we don't check for checks, this will be true
 
     // general information about the move
     bool sameFile = (curX == toX);
@@ -49,7 +49,7 @@ bool Pawn::isValidMove(int curX, int curY, int toX, int toY, Board* board) {
     }
 
     // make sure move does not cause a check
-    if (validMove) {
+    if (checkSafety && validMove) {
         avoidCheck = board->avoidsCheck(curX, curY, toX, toY);
     }
 

@@ -23,7 +23,7 @@ public:
     King(PieceColor color);
 
     // function overrides
-    virtual bool isValidMove(int curX, int curY, int toX, int toY, Board* board) override;
+    virtual bool isValidMove(int curX, int curY, int toX, int toY, bool checkSafety, Board* board) override;
     virtual void setHasMoved() override;
 };
 

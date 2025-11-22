@@ -19,8 +19,9 @@ int main() {
     // initialize board
     Board chessBoard;
 
-    // initialize current state and position of piece to be selected
+    // initialize current state, turn, and position of piece to be selected
     GameState currentState = GameState::AWAITING_SELECTION;
+    PieceColor currentTurn = PieceColor::LIGHT;
     int selectedX = -1; // invalid value as a placeholder 
     int selectedY = -1;
 
@@ -43,32 +44,35 @@ int main() {
         if (isTouchPressed && !wasTouchPressed) {
             int gridX = pixelToCoord(pixelX);
             int gridY = pixelToCoord(pixelY);
+            bool validGrid = (gridX >= 0) && (gridX < 8) && (gridY >= 0) && (gridY < 8);
 
-            if ((currentState == GameState::AWAITING_SELECTION) && gridX < 8) {
-                std::cout << "select: " << gridX << "," << gridY << std::endl;
+            if ((currentState == GameState::AWAITING_SELECTION) && validGrid) {
+                // std::cout << "select: " << gridX << "," << gridY << std::endl;
+                Piece* selectedPiece = chessBoard.getPieceAt(gridX, gridY);
 
-                if (chessBoard.getPieceAt(gridX, gridY) != nullptr) {
+                // selects piece if the selected square is a piece of the color of the current turn
+                if (selectedPiece != nullptr && selectedPiece->getColor() == currentTurn) {
                     selectedX = gridX;
                     selectedY = gridY;
 
                     // flip current state
                     currentState = GameState::PIECE_SELECTED;
                 }
-
-                // TODO: show valid moves logic
-                
             } else if ((currentState == GameState::PIECE_SELECTED)) {
                 // state must flip no matter what input is given
                 currentState = GameState::AWAITING_SELECTION;
 
                 // allows for clicking outside of board to reset current move
-                if (gridX < 8) {
-                    std::cout << "move to: " << gridX << "," << gridY << std::endl;
+                if (validGrid) {
+                    // std::cout << "move to: " << gridX << "," << gridY << std::endl;
                     Piece* selectedPiece = chessBoard.getPieceAt(selectedX, selectedY);
-                    bool validMove = selectedPiece->isValidMove(selectedX, selectedY, gridX, gridY, &chessBoard);
-                    std::cout << "Valid move: " << validMove << std::endl;
+                    bool validMove = selectedPiece->isValidMove(selectedX, selectedY, gridX, gridY, true, &chessBoard);
+                    // std::cout << "Valid move: " << validMove << std::endl;
                     if (validMove) {
                         chessBoard.move(selectedX, selectedY, gridX, gridY);
+
+                        // flip turn using ternary operator
+                        currentTurn = (currentTurn == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;
                     }
                 }
             }
@@ -79,6 +83,29 @@ int main() {
 
         // draws the board
         chessBoard.draw();
+
+        // check if the available move indicators need to be drawn
+        if (currentState == GameState::PIECE_SELECTED) {
+            chessBoard.drawAvailableMoves(selectedX, selectedY);
+        }
+
+        // temporary code to write turn order to screen
+        if (currentTurn == PieceColor::LIGHT) {
+            LCD.SetFontColor(WHITE);
+            LCD.WriteAt("Turn:", 250, 25);
+            LCD.WriteAt("LIGHT", 250, 50);
+        } else {
+            LCD.SetFontColor(WHITE);
+            LCD.WriteAt("Turn:", 250, 25);
+            LCD.WriteAt("DARK", 250, 50);
+        }
+
+        // temporary code to test for checks
+        PieceColor oppCol = (currentTurn == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;
+        if (chessBoard.isCheck(oppCol)) {
+            LCD.SetFontColor(WHITE);
+            LCD.WriteAt("Check!", 250, 100);
+        }
 
         // updates screen
         LCD.Update();

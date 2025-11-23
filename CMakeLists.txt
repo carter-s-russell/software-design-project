@@ -64,7 +64,7 @@ set(CHESS_SOURCES
     "src/Piece.cpp"
     "src/Pawn.cpp"
     "src/King.cpp"
-    # Add new files like "src/Rook.cpp" here as you create them
+    "src/Knight.cpp"
 )
 
 # Create the 'chess' library from your source files.

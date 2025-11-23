@@ -23,11 +23,6 @@ private:
     std::unique_ptr<Piece> m_grid[8][8];
 
     /**
-     * @brief Sets all the pieces to their starting position
-     */
-    void setupBoard();
-
-    /**
      * @brief Member variables to keep track of the position of each king
      * Initialized to the starting square of the king
      */

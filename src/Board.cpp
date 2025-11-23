@@ -16,7 +16,7 @@ const unsigned int DARK_SQUARE_COLOR = SLATEGRAY;
 // -- Public Member Functions --
 
 Board::Board() {
-    setupBoard();
+    setupBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 }
 
 void Board::setupBoard(const std::string& fen) {
@@ -178,33 +178,6 @@ void Board::updateKingPos(int curX, int curY, int toX, int toY) {
 }
 
 // -- Private Member Functions --
-
-void Board::setupBoard() {
-    // eventually, just call this method:
-    // setupBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
-
-    // clearing the board
-    // .reset() clears a unique_ptr
-    for (int y = 0; y < 8; y++) {
-        for (int x = 0; x < 8; x++) {
-            m_grid[y][x].reset();
-        }
-    }
-
-    // initialize pawns
-    for (int x = 0; x < 8; x++) {
-        m_grid[6][x] = std::make_unique<Pawn>(PieceColor::LIGHT);
-        m_grid[1][x] = std::make_unique<Pawn>(PieceColor::DARK);
-    }
-    
-    // initialize kings
-    m_grid[7][4] = std::make_unique<King>(PieceColor::LIGHT);
-    m_lightKingPosX = 4;
-    m_lightKingPosY = 7;
-    m_grid[0][3] = std::make_unique<King>(PieceColor::DARK);
-    m_darkKingPosX = 3;
-    m_darkKingPosY = 0;
-}
 
 bool Board::avoidsCheck(int curX, int curY, int toX, int toY) {
     // get other team color

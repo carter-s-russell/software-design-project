@@ -32,6 +32,6 @@ bool Knight::isValidMove(int curX, int curY, int toX, int toY, bool checkSafety,
         avoidCheck = board->avoidsCheck(curX, curY, toX, toY);
     }
 
-    // base case, move is not valid
+    // must be a valid psuedo-move and avoid any checks to be a valid move
     return validMove && avoidCheck;
 }

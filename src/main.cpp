@@ -101,11 +101,11 @@ int main() {
         }
 
         // temporary code to test for checks
-        PieceColor oppCol = (currentTurn == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;
-        if (chessBoard.isCheck(oppCol)) {
-            LCD.SetFontColor(WHITE);
-            LCD.WriteAt("Check!", 250, 100);
-        }
+        // PieceColor oppCol = (currentTurn == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;
+        // if (chessBoard.isCheck(oppCol)) {
+        //     LCD.SetFontColor(WHITE);
+        //     LCD.WriteAt("Check!", 250, 100);
+        // }
 
         // updates screen
         LCD.Update();

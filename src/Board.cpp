@@ -8,6 +8,7 @@
 #include "chess/Pawn.h"
 #include "chess/King.h"
 #include "chess/Knight.h"
+#include "chess/Bishop.h"
 
 const int BOARD_X_OFFSET = 0;
 const int BOARD_Y_OFFSET = 0;
@@ -60,7 +61,7 @@ void Board::setupBoard(const std::string& fen) {
                 case 'p': newPiece = std::make_unique<Pawn>(color); break;
                 // case 'r': newPiece = std::make_unique<Rook>(color); break;
                 case 'n': newPiece = std::make_unique<Knight>(color); break;
-                // case 'b': newPiece = std::make_unique<Bishop>(color); break;
+                case 'b': newPiece = std::make_unique<Bishop>(color); break;
                 // case 'q': newPiece = std::make_unique<Queen>(color); break;
             }
 

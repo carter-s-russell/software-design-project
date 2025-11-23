@@ -26,11 +26,32 @@ private:
      * @brief Sets all the pieces to their starting position
      */
     void setupBoard();
+
+    /**
+     * @brief Member variables to keep track of the position of each king
+     * Initialized to the starting square of the king
+     */
+    int m_lightKingPosX;
+    int m_lightKingPosY;
+    int m_darkKingPosX;
+    int m_darkKingPosY;
+
+    /**
+     * @brief Member vairables for images of move indicators
+     */
+    FEHImage m_indicatorFreeSpace = "res/move_indicator.png";
+    FEHImage m_indicatorCapture = "res/capture_indicator.png";
 public:
     /**
      * @brief Construct a new Board object and set up the pieces 
      */
     Board();
+
+    /**
+     * @brief Sets up all the pieces according to a given FEN position
+     * @param fen A Forsyth–Edwards Notation for the desired position
+     */
+    void setupBoard(const std::string& fen);
 
     /**
      * @brief Gets the piece at a specific coordinate
@@ -63,6 +84,41 @@ public:
      * @brief Draws the board and its pieces
      */
     void draw();
+
+    /**
+     * @brief Draws the available move indicators after the pieces have been drawn
+     * @param x X position of selected piece
+     * @param y Y position of selected piece
+     */
+    void drawAvailableMoves(int x, int y);
+
+    /**
+     * @brief Intended to be called after a move is made, checks if there is a check present on the current board
+     * @param currentTurn The color of the piece that just moved
+     * @return true if there is a check present, false otherwise
+     */
+    bool isCheck(PieceColor currentTurn);
+
+    /**
+     * @brief Checks if a valid move avoids moving into check 
+     * uses the same params as isValidMove, because only that function will call it
+     * @param curX The current X position of the piece
+     * @param curY The current Y position of the piece
+     * @param toX The desired X position of the piece
+     * @param toY The desired Y position of the piece
+     * @return true if the move does avoid check, false otherwise
+     */
+    bool avoidsCheck(int curX, int curY, int toX, int toY);
+
+    /**
+     * @brief Checks if position of king needs to be updated by giving the current and
+     * to positions of the latest move
+     * @param curX The current X position of the piece
+     * @param curY The current Y position of the piece
+     * @param toX The desired X position of the piece
+     * @param toY The desired Y position of the piece
+     */
+    void updateKingPos(int curX, int curY, int toX, int toY);
 };
 
 #endif // BOARD_H

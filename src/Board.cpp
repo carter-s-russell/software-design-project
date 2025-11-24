@@ -14,8 +14,8 @@
 
 const int BOARD_X_OFFSET = 0;
 const int BOARD_Y_OFFSET = 0;
-const unsigned int LIGHT_SQUARE_COLOR = WHITE;
-const unsigned int DARK_SQUARE_COLOR = SLATEGRAY;
+const unsigned int LIGHT_SQUARE_COLOR = SEASHELL;
+const unsigned int DARK_SQUARE_COLOR = LIGHTSLATEGRAY;
 
 // -- Public Member Functions --
 
@@ -90,9 +90,7 @@ void Board::move(int curX, int curY, int toX, int toY) {
         PieceColor color = movingPiece->getColor();
         int promotionRank = (color == PieceColor::LIGHT) ? 0 : 7;
         if (promotionRank == toY) {
-            std::unique_ptr<Piece> promotionPiece = std::make_unique<Queen>(color);
-            // include logic for selecting promotion piece here
-            m_grid[toY][toX] = std::move(promotionPiece);
+            drawPromotionSelection(toX, color);
         }
 
         // TODO: en passant logic here
@@ -179,22 +177,6 @@ bool Board::isCheck(PieceColor currentTurn) {
     return false;
 }
 
-void Board::updateKingPos(int curX, int curY, int toX, int toY) {
-    // move light king pos
-    if (curX == m_lightKingPosX && curY == m_lightKingPosY) {
-        m_lightKingPosX = toX;
-        m_lightKingPosY = toY;
-    }
-
-    // move dark king pos
-    if (curX == m_darkKingPosX && curY == m_darkKingPosY) {
-        m_darkKingPosX = toX;
-        m_darkKingPosY = toY;
-    }
-}
-
-// -- Private Member Functions --
-
 bool Board::avoidsCheck(int curX, int curY, int toX, int toY) {
     // get other team color
     PieceColor oppTurn = (m_grid[curY][curX].get()->getColor() == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;
@@ -230,3 +212,106 @@ bool Board::avoidsCheck(int curX, int curY, int toX, int toY) {
     return !check;
 }
 
+void Board::updateKingPos(int curX, int curY, int toX, int toY) {
+    // move light king pos
+    if (curX == m_lightKingPosX && curY == m_lightKingPosY) {
+        m_lightKingPosX = toX;
+        m_lightKingPosY = toY;
+    }
+
+    // move dark king pos
+    if (curX == m_darkKingPosX && curY == m_darkKingPosY) {
+        m_darkKingPosX = toX;
+        m_darkKingPosY = toY;
+    }
+}
+
+// -- Private Member Functions --
+
+void Board::drawPromotionSelection(int file, PieceColor color) {
+    // lambda function for integer to pixel calculations
+    auto getPixelY = [&](int r) { return BOARD_Y_OFFSET + (r * SQUARE_SIZE); };
+
+    int pixelX = BOARD_X_OFFSET + (file * SQUARE_SIZE);
+
+    // starting rank and direction of drawing
+    int rank = (color == PieceColor::LIGHT) ? 0 : 7;
+    int step = (color == PieceColor::LIGHT) ? 1 : -1;
+
+    // draw four squares of white squares
+    int squareY = (color == PieceColor::LIGHT) ? getPixelY(0) : getPixelY(4);
+    LCD.SetFontColor(WHITE);
+    LCD.FillRectangle(pixelX, squareY, SQUARE_SIZE, SQUARE_SIZE * 4);
+
+    // draw pieces
+    // this logic ensures that the queen is drawn on the promotion square for ease
+    for (int i = 0; i < 4; i++) {
+        int pixelY = getPixelY(rank);
+        std::unique_ptr<Piece> piece;
+
+        switch (i) {
+            case 0: piece = std::make_unique<Queen>(color); break;
+            case 1: piece = std::make_unique<Rook>(color); break;
+            case 2: piece = std::make_unique<Bishop>(color); break;
+            case 3: piece = std::make_unique<Knight>(color); break;
+        }
+
+        if (piece) {
+            piece->draw(pixelX, pixelY);
+        }
+
+        // move in the direction determined by step
+        rank += step;
+    }
+
+    // selection logic
+    int inputX, inputY;
+
+    // ignore current click
+    while(LCD.Touch(&inputY, &inputX));
+
+    // should pause the program until there is an input
+    while (true) {
+        // wait for input
+        while (!LCD.Touch(&inputX, &inputY));
+
+        bool insideMenu = (inputX >= pixelX) && 
+                          (inputX < pixelX + SQUARE_SIZE) && 
+                          (inputY >= squareY) && 
+                          (inputY < squareY + (SQUARE_SIZE * 4));
+
+        if (insideMenu) {
+            break; 
+        }
+
+        // if the click was invalid, ignore the rest of it
+        while(LCD.Touch(&inputX, &inputY));
+    }
+
+    // find which square user clicked on
+    int selectionIndex = (inputY - squareY) / SQUARE_SIZE;
+
+    // get piece
+    std::unique_ptr<Piece> promotionPiece;
+
+    // set piece
+    if (color == PieceColor::LIGHT) {
+        switch (selectionIndex) {
+            case 0: promotionPiece = std::make_unique<Queen>(color); break;
+            case 1: promotionPiece = std::make_unique<Rook>(color); break;
+            case 2: promotionPiece = std::make_unique<Bishop>(color); break;
+            case 3: promotionPiece = std::make_unique<Knight>(color); break;
+        }
+    } else {
+        switch (selectionIndex) {
+            case 0: promotionPiece = std::make_unique<Knight>(color); break;
+            case 1: promotionPiece = std::make_unique<Bishop>(color); break;
+            case 2: promotionPiece = std::make_unique<Rook>(color); break;
+            case 3: promotionPiece = std::make_unique<Queen>(color); break;
+        }
+    }
+
+    // replace pawn with promoted piece
+    rank = (color == PieceColor::LIGHT) ? 0 : 7;
+    m_grid[rank][file] = std::move(promotionPiece);
+}

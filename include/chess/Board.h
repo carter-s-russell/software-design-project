@@ -36,6 +36,13 @@ private:
      */
     FEHImage m_indicatorFreeSpace = "res/move_indicator.png";
     FEHImage m_indicatorCapture = "res/capture_indicator.png";
+
+    /**
+     * @brief Allows the user to selecte a piece to promote to
+     * @param file The file (column) that the promotion is happening on 
+     * @param color The color of the piece that is promoting
+     */
+    void drawPromotionSelection(int file, PieceColor color);
 public:
     /**
      * @brief Construct a new Board object and set up the pieces 

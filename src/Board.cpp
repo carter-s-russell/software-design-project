@@ -84,7 +84,19 @@ void Board::move(int curX, int curY, int toX, int toY) {
 
     // advanced logic
     movingPiece->setHasMoved();
-    // future enpassant, castling, promotion logic to go here
+
+    // pawn special move logic
+    if (movingPiece->getType() == 'p') {
+        PieceColor color = movingPiece->getColor();
+        int promotionRank = (color == PieceColor::LIGHT) ? 0 : 7;
+        if (promotionRank == toY) {
+            std::unique_ptr<Piece> promotionPiece = std::make_unique<Queen>(color);
+            // include logic for selecting promotion piece here
+            m_grid[toY][toX] = std::move(promotionPiece);
+        }
+
+        // TODO: en passant logic here
+    }
 
     // potentially update king pos
     updateKingPos(curX, curY, toX, toY);

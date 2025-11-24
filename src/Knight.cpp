@@ -9,7 +9,7 @@
  * @param color Color of the Knight 
  */
 Knight::Knight(PieceColor color)
-    : Piece(color, (color == PieceColor::LIGHT) ? "res/knight_light.png" : "res/knight_dark.png")
+    : Piece(color, 'n', (color == PieceColor::LIGHT) ? "res/knight_light.png" : "res/knight_dark.png")
 {
     // empty constructor body
 }

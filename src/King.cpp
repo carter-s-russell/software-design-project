@@ -9,7 +9,7 @@
  * @param color Color of the King 
  */
 King::King(PieceColor color)
-    : Piece(color, (color == PieceColor::LIGHT) ? "res/king_light.png" : "res/king_dark.png"),
+    : Piece(color, 'k', (color == PieceColor::LIGHT) ? "res/king_light.png" : "res/king_dark.png"),
       m_hasMoved(false)
 {
     // empty constructor body

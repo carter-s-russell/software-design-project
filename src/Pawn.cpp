@@ -9,7 +9,7 @@
  * @param color Color of the Pawn 
  */
 Pawn::Pawn(PieceColor color)
-    : Piece(color, (color == PieceColor::LIGHT) ? "res/pawn_light.png" : "res/pawn_dark.png"),
+    : Piece(color, 'p', (color == PieceColor::LIGHT) ? "res/pawn_light.png" : "res/pawn_dark.png"),
       m_hasMoved(false)
 {
     // empty constructor body

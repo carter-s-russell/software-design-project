@@ -10,7 +10,7 @@
  * @param color Color of the Bishop 
  */
 Bishop::Bishop(PieceColor color)
-    : Piece(color, (color == PieceColor::LIGHT) ? "res/bishop_light.png" : "res/bishop_dark.png")
+    : Piece(color, 'b', (color == PieceColor::LIGHT) ? "res/bishop_light.png" : "res/bishop_dark.png")
 {
     // empty constructor body
 }

@@ -10,7 +10,7 @@
  * @param color Color of the Rook 
  */
 Rook::Rook(PieceColor color)
-    : Piece(color, (color == PieceColor::LIGHT) ? "res/rook_light.png" : "res/rook_dark.png"),
+    : Piece(color, 'r', (color == PieceColor::LIGHT) ? "res/rook_light.png" : "res/rook_dark.png"),
       m_hasMoved(false)
 {
     // empty constructor body

@@ -28,10 +28,11 @@ class Piece {
 protected:
     PieceColor m_color;
     FEHImage m_image;
+    char m_type;
 
 public:
     // Constructor to set the piece's color
-    Piece(PieceColor color, const char* filename);
+    Piece(PieceColor color, char type, const char* filename);
 
     // Virtual destructor so actual piece's destructor is used
     virtual ~Piece() {}
@@ -74,6 +75,12 @@ public:
      * @return The color of the piece as a PieceColor enum member
      */
     PieceColor getColor() const { return m_color; }
+
+    /**
+     * @brief Get the type of piece
+     * @return The type of the piece as a lowercase char
+     */
+    char getType() const { return m_type; }
 };
 
 #endif // PIECE_H

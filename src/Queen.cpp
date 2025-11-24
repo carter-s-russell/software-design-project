@@ -10,7 +10,7 @@
  * @param color Color of the Queen 
  */
 Queen::Queen(PieceColor color)
-    : Piece(color, (color == PieceColor::LIGHT) ? "res/queen_light.png" : "res/queen_dark.png")
+    : Piece(color, 'q', (color == PieceColor::LIGHT) ? "res/queen_light.png" : "res/queen_dark.png")
 {
     // empty constructor body
 }

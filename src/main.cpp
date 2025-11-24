@@ -55,6 +55,7 @@ int main() {
                     selectedX = gridX;
                     selectedY = gridY;
 
+                    std::cout << selectedPiece->getType();
                     // flip current state
                     currentState = GameState::PIECE_SELECTED;
                 }

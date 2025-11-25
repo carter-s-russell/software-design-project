@@ -24,7 +24,6 @@ private:
 
     /**
      * @brief Member variables to keep track of the position of each king
-     * Initialized to the starting square of the king
      */
     int m_lightKingPosX;
     int m_lightKingPosY;
@@ -32,7 +31,7 @@ private:
     int m_darkKingPosY;
 
     /**
-     * @brief Member vairables for images of move indicators
+     * @brief Member variables for images of move indicators
      */
     FEHImage m_indicatorFreeSpace = "res/move_indicator.png";
     FEHImage m_indicatorCapture = "res/capture_indicator.png";
@@ -43,6 +42,12 @@ private:
      * @param color The color of the piece that is promoting
      */
     void drawPromotionSelection(int file, PieceColor color);
+
+    /**
+     * @brief Member variables to control en passant logic
+     */
+    int enPassantFile;
+    PieceColor enPassantColor;
 public:
     /**
      * @brief Construct a new Board object and set up the pieces 
@@ -121,6 +126,26 @@ public:
      * @param toY The desired Y position of the piece
      */
     void updateKingPos(int curX, int curY, int toX, int toY);
+
+    /**
+     * @brief Sets the conditions for en passant if a two space pawn move occurs
+     * @param file 
+     * @param color 
+     */
+    void setEnPassant(int file, PieceColor color) {
+        enPassantFile = file;
+        enPassantColor = color;
+    }
+
+    /**
+     * @brief Checks if an en passant is available for the moving pawn
+     * @param file The file that the pawn would move to
+     * @param color The color of the moving pawn 
+     * @return True if there is an en passant available, false otherwise 
+     */
+    bool canEnPassant(int file, PieceColor color) {
+        return (file == enPassantFile) && (color != enPassantColor);
+    }
 };
 
 #endif // BOARD_H

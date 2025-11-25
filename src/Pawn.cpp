@@ -27,25 +27,26 @@ bool Pawn::isValidMove(int curX, int curY, int toX, int toY, bool checkSafety, B
     int direction = (m_color == PieceColor::LIGHT) ? 1 : -1;
 
     // check for 1 rank forward
-    if (sameFile && (deltaRank == direction) && (pieceAtTarget == nullptr)) {
+    if (sameFile && (deltaRank == direction) && !pieceAtTarget) {
         validMove = true;
     }
 
     // check for 2 rank forward
-    if (sameFile && (deltaRank == 2 * direction) && (pieceAtTarget == nullptr) && !m_hasMoved) {
+    if (sameFile && (deltaRank == 2 * direction) && !pieceAtTarget && !m_hasMoved) {
         // check for square between
-        // LIGHT is toY+1, and vice versa, so direction works perfectly
-        validMove = (board->getPieceAt(toX, toY + direction) == nullptr);
+        // LIGHT is toY+1, and DARK is toY-1, so direction works perfectly
+        validMove = !board->getPieceAt(toX, toY + direction);
     }
 
     // check for diagonal capture
-    if (adjFile && (deltaRank == direction) && (pieceAtTarget != nullptr)) {
+    if (adjFile && (deltaRank == direction) && pieceAtTarget) {
         validMove = (pieceAtTarget->getColor() != m_color);
     }
 
-    // TODO: check for enpassant
-    if ( false ) {
-        validMove = true;
+    // check for enpassant
+    int enPassantRank = (m_color == PieceColor::LIGHT) ? 3 : 4;
+    if (adjFile && (deltaRank == direction) && (curY == enPassantRank) && !pieceAtTarget) {
+        validMove = board->canEnPassant(toX, m_color);
     }
 
     // make sure move does not cause a check

@@ -78,6 +78,8 @@ void Board::setupBoard(const std::string& fen) {
 void Board::move(int curX, int curY, int toX, int toY) {
     // get piece being moved
     Piece* movingPiece = getPieceAt(curX, curY);
+    PieceColor pieceColor = movingPiece->getColor();
+    char pieceType = movingPiece->getType();
 
     // basic piece moving logic
     m_grid[toY][toX] = std::move(m_grid[curY][curX]);
@@ -86,15 +88,21 @@ void Board::move(int curX, int curY, int toX, int toY) {
     movingPiece->setHasMoved();
 
     // pawn special move logic
-    if (movingPiece->getType() == 'p') {
-        PieceColor color = movingPiece->getColor();
-        int promotionRank = (color == PieceColor::LIGHT) ? 0 : 7;
-        if (promotionRank == toY) {
-            drawPromotionSelection(toX, color);
+    if (pieceType == 'p') {
+        // promotion logic
+        int promotionRank = (pieceColor == PieceColor::LIGHT) ? 0 : 7;
+        if (toY == promotionRank) {
+            drawPromotionSelection(toX, pieceColor);
         }
 
-        // TODO: en passant logic here
-    } else if (movingPiece->getType() == 'k') {
+        // en passant logic
+        int enPassantRank = (pieceColor == PieceColor::LIGHT) ? 3 : 4;
+        if (curY == enPassantRank && canEnPassant(toX, pieceColor)) {
+            std::cout << "removing: " << toX << "," << enPassantRank << std::endl; 
+            m_grid[enPassantRank][toX].reset();
+        }
+
+    } else if (pieceType == 'k') {
         if (toX-curX == 2) {
             // short castle
             // move rook
@@ -104,6 +112,14 @@ void Board::move(int curX, int curY, int toX, int toY) {
             // move rook
             m_grid[curY][3] = std::move(m_grid[curY][0]);
         }
+    }
+
+    // update en passant status
+    if (pieceType == 'p' && std::abs(toY-curY) == 2) {
+        setEnPassant(toX, pieceColor);
+    } else {
+        // -1 does not correlate with any index on the board, so it will never return true for canEnPassant
+        setEnPassant(-1, pieceColor);
     }
 
     // potentially update king pos

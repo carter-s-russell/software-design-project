@@ -1,6 +1,7 @@
 #include "chess/King.h"
 #include "chess/Board.h"
 #include <cmath>
+#include <iostream>
 
 /**
  * @brief The King constructor
@@ -31,9 +32,23 @@ bool King::isValidMove(int curX, int curY, int toX, int toY, bool checkSafety, B
         validMove = true;
     }
 
-    // TODO: add castling
-    if (false) {
-        validMove = true;
+    // castling logic
+    // find if the move to space is a space for castling
+    bool castleSpace = !m_hasMoved && (std::abs(curX-toX) == 2) && (curY == toY);
+    // get the piece that should be the rook on the side of the castling
+    Piece* potentialRook = (toX-curX == 2) ? board->getPieceAt(7,curY) : board->getPieceAt(0,curY); 
+    // test if the space is correct for caslting and the corner has a rook that hasnt moved
+    if (castleSpace && potentialRook && potentialRook->getType() == 'r' && !potentialRook->getHasMoved()) {
+        // find if all spaces are empty between the rook and king
+        bool emptyBetween;
+        if (toX - curX == 2) {
+            emptyBetween = !board->getPieceAt(5,curY) && !board->getPieceAt(6,curY);
+        } else {
+            emptyBetween = !board->getPieceAt(1,curY) && !board->getPieceAt(2,curY) && !board->getPieceAt(3,curY);
+        }
+
+        // average of curX and toX gets the space between
+        validMove = emptyBetween && board->avoidsCheck(curX, curY, (curX+toX)/2, toY);
     }
 
     // make sure move does not cause a check
@@ -47,4 +62,8 @@ bool King::isValidMove(int curX, int curY, int toX, int toY, bool checkSafety, B
 
 void King::setHasMoved() {
     m_hasMoved = true;
+}
+
+bool King::getHasMoved() {
+    return m_hasMoved;
 }

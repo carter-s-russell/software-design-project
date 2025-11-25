@@ -58,6 +58,14 @@ public:
         // do nothing by default
     }
 
+    /**
+     * @brief Getter to see if a piece has moved 
+     * @return True if the piece has moved, false otherwise
+     */
+    virtual bool getHasMoved() {
+        return true;
+    }
+
     // -- Regular functions --
 
     /**

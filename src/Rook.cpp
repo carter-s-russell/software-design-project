@@ -54,3 +54,7 @@ bool Rook::isValidMove(int curX, int curY, int toX, int toY, bool checkSafety, B
 void Rook::setHasMoved() {
     m_hasMoved = true;
 }
+
+bool Rook::getHasMoved() {
+    return m_hasMoved;
+}

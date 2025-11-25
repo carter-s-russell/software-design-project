@@ -94,6 +94,16 @@ void Board::move(int curX, int curY, int toX, int toY) {
         }
 
         // TODO: en passant logic here
+    } else if (movingPiece->getType() == 'k') {
+        if (toX-curX == 2) {
+            // short castle
+            // move rook
+            m_grid[curY][5] = std::move(m_grid[curY][7]);
+        } else if (toX-curX == -2) {
+            // long castle
+            // move rook
+            m_grid[curY][3] = std::move(m_grid[curY][0]);
+        }
     }
 
     // potentially update king pos
@@ -167,7 +177,6 @@ bool Board::isCheck(PieceColor currentTurn) {
             // using the false flag for checkSafety because it does not matter if an attacking piece would cause a check,
             // the move is still invalid
             if (piece && piece->isValidMove(x, y, oppKingPosX, oppKingPosY, false, this)) { 
-                // std::cout << "Piece giving check: x=" << x << ", y=" << y << " | to: x=" << oppKingPosX << ", y=" << oppKingPosY << std::endl;
                 return true;
             }
         }

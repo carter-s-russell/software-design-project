@@ -25,6 +25,7 @@ public:
     // function overrides
     virtual bool isValidMove(int curX, int curY, int toX, int toY, bool checkSafety, Board* board) override;
     virtual void setHasMoved() override;
+    virtual bool getHasMoved() override;
 };
 
 #endif // ROOK_H

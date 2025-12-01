@@ -11,7 +11,7 @@ These steps will clone the repository and download the required class libraries.
 
 1.  **Clone the Repository:**
     ```bash
-    git clone <your-repo-url>
+    git clone https://github.com/carter-s-russell/software-design-project.git
     cd software-design-project
     ```
 
@@ -40,15 +40,25 @@ We use `CMake` to build the project.
 
 2.  **Configure the Project:**
     This generates the necessary build files for your operating system.
-    ```bash
-    cmake ..
-    ```
+    * **Linux / macOS:**
+        ```bash
+        cmake ..
+        ```
+    * **Windows:**
+        ```bash
+        cmake -G "MinGW Makefiles" ..
+        ```
 
 3.  **Compile the Code:**
     This command automatically runs the correct build tool (Make, MinGW, etc.) for your system.
-    ```bash
-    cmake --build .
-    ```
+    * **Linux / macOS:**
+        ```bash
+        make
+        ```
+    * **Windows:**
+        ```bash
+        cmake --build .
+        ```
 
 ### 3. Running Your Code
 

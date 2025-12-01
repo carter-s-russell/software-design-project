@@ -107,6 +107,13 @@ public:
     bool isCheck(PieceColor currentTurn);
 
     /**
+     * @brief Checks if any piece on the current team can move
+     * @param currentTurn The color of the team to check 
+     * @return True if there are any valid moves, false otherwise 
+     */
+    bool anyValidMoves(PieceColor currentTurn);
+
+    /**
      * @brief Checks if a valid move avoids moving into check 
      * uses the same params as isValidMove, because only that function will call it
      * @param curX The current X position of the piece

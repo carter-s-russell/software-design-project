@@ -20,9 +20,19 @@ enum class GameState {
 
 class GameScreen : public Screen {
 private:
-    // declare variables here
+    // initialize board
+    Board chessBoard;
+
+    // initialize current state, turn, and position of piece to be selected
+    GameState currentState = GameState::AWAITING_SELECTION;
+    PieceColor currentTurn = PieceColor::LIGHT;
+    int selectedX = -1; // invalid value as a placeholder 
+    int selectedY = -1;
+
+    // track if the screen was already pressed on the previous frame
+    bool wasTouchPressed = false;
+    bool isTouchPressed;
 public:
-    GameScreen(); // constructor
     virtual ScreenType update() override;
     virtual void draw() override; 
 };

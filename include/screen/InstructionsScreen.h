@@ -16,6 +16,7 @@ public:
     ScreenType update() override {
         int x, y;
         if (LCD.Touch(&x, &y)) {
+            while (LCD.Touch(&x, &y)) {}
             return ScreenType::MENU;
         }
         return ScreenType::NONE;
@@ -25,7 +26,7 @@ public:
         // sets the background to black
         LCD.Clear(BLACK);
         LCD.SetFontColor(WHITE);
-        LCD.WriteAt("Instructions go here", 100, 25);
+        LCD.WriteAt("Instructions go here", 25, 25);
     }
 };
 

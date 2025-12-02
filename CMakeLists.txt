@@ -58,43 +58,29 @@ target_include_directories(feh_lib PUBLIC
 target_link_libraries(feh_lib PUBLIC ${FEH_SYSTEM_LIBS})
 
 # --- 5. Define Your Chess Logic Library (chess) ---
-# List all the .cpp files for your core game logic.
-set(CHESS_SOURCES
-    "src/Board.cpp"
-    "src/Piece.cpp"
-    "src/Pawn.cpp"
-    "src/King.cpp"
-    "src/Knight.cpp"
-    "src/Bishop.cpp"
-    "src/Rook.cpp"
-    "src/Queen.cpp"
-)
+file(GLOB_RECURSE CHESS_SOURCES "src/chess/*.cpp")
 
-# Create the 'chess' library from your source files.
 add_library(chess ${CHESS_SOURCES})
-
-# Tell the 'chess' library where to find its own header files (in 'include/').
-target_include_directories(chess PUBLIC
-    "include"
-)
-
-# Link your 'chess' library to 'feh_lib'.
-# This lets you use FEH library functions (like FEHImage) in your game logic.
+target_include_directories(chess PUBLIC "include")
 target_link_libraries(chess PUBLIC feh_lib)
 
-# --- 6. Define the Main Game Executable (chess_app) ---
-# Create the final, runnable program from your main.cpp file.
-add_executable(chess_app
-    "src/main.cpp"
-)
+# --- 6. Define Your UI Library (chess_ui) ---
+# Create a new library for screens
+file(GLOB_RECURSE SCREEN_SOURCES "src/screen/*.cpp")
 
-# Link the final program against your 'chess' library.
-# This connects your main.cpp to all your game logic and all the FEH libraries.
-target_link_libraries(chess_app PRIVATE
-    chess
-)
+add_library(chess_ui ${SCREEN_SOURCES})
+# It needs to include its own headers
+target_include_directories(chess_ui PUBLIC "include")
+# It depends on the chess logic library
+target_link_libraries(chess_ui PUBLIC chess feh_lib)
 
-# --- 7. Define the Test Executable (run_tests) ---
+# --- 7. Define the Main Game Executable ---
+add_executable(chess_app "src/main.cpp")
+
+# Link against the UI library (which brings in 'chess' automatically)
+target_link_libraries(chess_app PRIVATE chess_ui)
+
+# --- 8. Define the Test Executable (run_tests) ---
 # Enable CMake's testing framework (CTest).
 enable_testing()
 
@@ -112,7 +98,7 @@ target_link_libraries(run_tests PRIVATE
 # Register 'run_tests' as a test that CTest can run.
 add_test(NAME ChessTests COMMAND run_tests)
 
-# --- 8. Copy Resource Files (Images) ---
+# --- 9. Copy Resource Files (Images) ---
 # This rule copies your 'res' folder into 'build/bin/res'
 # so the executable can find your images.
 

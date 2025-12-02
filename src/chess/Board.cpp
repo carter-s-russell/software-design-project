@@ -202,6 +202,30 @@ bool Board::isCheck(PieceColor currentTurn) {
     return false;
 }
 
+bool Board::anyValidMoves(PieceColor currentTurn) {
+    // loop through all squares for pieces
+    for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < 8; x++) {
+            // getting Piece at current square
+            Piece* piece = m_grid[y][x].get();
+
+            if (piece && piece->getColor() == currentTurn) {
+                // loop through all squares for moves
+                for (int y2 = 0; y2 < 8; y2++) {
+                    for (int x2 = 0; x2 < 8; x2++) {
+                        if (piece->isValidMove(x, y, x2, y2, true, this)) {
+                            return true;
+                        }
+                    }
+                } // end second for-loop
+            } // end piece if
+
+        }
+    } // end first for-loop
+
+    return false;
+}
+
 bool Board::avoidsCheck(int curX, int curY, int toX, int toY) {
     // get other team color
     PieceColor oppTurn = (m_grid[curY][curX].get()->getColor() == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;

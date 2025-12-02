@@ -79,9 +79,19 @@ void GameScreen::draw() {
 
     // temporary code to test for checks
     PieceColor oppCol = (currentTurn == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;
-    if (chessBoard.isCheck(oppCol)) {
+    bool inCheck = chessBoard.isCheck(oppCol);
+    bool canMove = chessBoard.anyValidMoves(currentTurn);
+    if (inCheck && canMove) {
         LCD.SetFontColor(WHITE);
         LCD.WriteAt("Check!", 250, 100);
+    } else if (inCheck && !canMove) {
+        LCD.SetFontColor(WHITE);
+        LCD.WriteAt("Check", 250, 100);
+        LCD.WriteAt("mate!", 250, 120);
+    } else if (!inCheck && !canMove) {
+        LCD.SetFontColor(WHITE);
+        LCD.WriteAt("Stale", 250, 100);
+        LCD.WriteAt("mate..", 250, 120);
     }
 
     // updates screen

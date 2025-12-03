@@ -11,41 +11,41 @@ ScreenType GameScreen::update() {
     int pixelX, pixelY;
 
     // current state of the touch
-    isTouchPressed = LCD.Touch(&pixelX, &pixelY);
+    m_isTouchPressed = LCD.Touch(&pixelX, &pixelY);
 
     // this now only runs on the frame that the touch happened
-    if (isTouchPressed && !wasTouchPressed) {
+    if (m_isTouchPressed && !m_wasTouchPressed) {
         int gridX = pixelToCoord(pixelX);
         int gridY = pixelToCoord(pixelY);
         bool validGrid = (gridX >= 0) && (gridX < 8) && (gridY >= 0) && (gridY < 8);
 
-        if ((currentState == GameState::AWAITING_SELECTION) && validGrid) {
+        if ((m_currentState == GameState::AWAITING_SELECTION) && validGrid) {
             // std::cout << "select: " << gridX << "," << gridY << std::endl;
-            Piece* selectedPiece = chessBoard.getPieceAt(gridX, gridY);
+            Piece* selectedPiece = m_board.getPieceAt(gridX, gridY);
 
             // selects piece if the selected square is a piece of the color of the current turn
-            if (selectedPiece != nullptr && selectedPiece->getColor() == currentTurn) {
-                selectedX = gridX;
-                selectedY = gridY;
+            if (selectedPiece != nullptr && selectedPiece->getColor() == m_currentTurn) {
+                m_selectedX = gridX;
+                m_selectedY = gridY;
 
                 // flip current state
-                currentState = GameState::PIECE_SELECTED;
+                m_currentState = GameState::PIECE_SELECTED;
             }
-        } else if ((currentState == GameState::PIECE_SELECTED)) {
+        } else if ((m_currentState == GameState::PIECE_SELECTED)) {
             // state must flip no matter what input is given
-            currentState = GameState::AWAITING_SELECTION;
+            m_currentState = GameState::AWAITING_SELECTION;
 
             // allows for clicking outside of board to reset current move
             if (validGrid) {
                 // std::cout << "move to: " << gridX << "," << gridY << std::endl;
-                Piece* selectedPiece = chessBoard.getPieceAt(selectedX, selectedY);
-                bool validMove = selectedPiece->isValidMove(selectedX, selectedY, gridX, gridY, true, &chessBoard);
+                Piece* selectedPiece = m_board.getPieceAt(m_selectedX, m_selectedY);
+                bool validMove = selectedPiece->isValidMove(m_selectedX, m_selectedY, gridX, gridY, true, &m_board);
                 // std::cout << "Valid move: " << validMove << std::endl;
                 if (validMove) {
-                    chessBoard.move(selectedX, selectedY, gridX, gridY);
+                    m_board.move(m_selectedX, m_selectedY, gridX, gridY);
 
                     // flip turn using ternary operator
-                    currentTurn = (currentTurn == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;
+                    m_currentTurn = (m_currentTurn == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;
                 }
             }
         }
@@ -59,15 +59,15 @@ void GameScreen::draw() {
     LCD.Clear(BLACK);
 
     // draws the board
-    chessBoard.draw();
+    m_board.draw();
 
     // check if the available move indicators need to be drawn
-    if (currentState == GameState::PIECE_SELECTED) {
-        chessBoard.drawAvailableMoves(selectedX, selectedY);
+    if (m_currentState == GameState::PIECE_SELECTED) {
+        m_board.drawAvailableMoves(m_selectedX, m_selectedY);
     }
 
     // temporary code to write turn order to screen
-    if (currentTurn == PieceColor::LIGHT) {
+    if (m_currentTurn == PieceColor::LIGHT) {
         LCD.SetFontColor(WHITE);
         LCD.WriteAt("Turn:", 250, 25);
         LCD.WriteAt("LIGHT", 250, 50);
@@ -78,9 +78,9 @@ void GameScreen::draw() {
     }
 
     // temporary code to test for checks
-    PieceColor oppCol = (currentTurn == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;
-    bool inCheck = chessBoard.isCheck(oppCol);
-    bool canMove = chessBoard.anyValidMoves(currentTurn);
+    PieceColor oppCol = (m_currentTurn == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;
+    bool inCheck = m_board.isCheck(oppCol);
+    bool canMove = m_board.anyValidMoves(m_currentTurn);
     if (inCheck && canMove) {
         LCD.SetFontColor(WHITE);
         LCD.WriteAt("Check!", 250, 100);
@@ -98,5 +98,5 @@ void GameScreen::draw() {
     LCD.Update();
 
     // updating frame check
-    wasTouchPressed = isTouchPressed;
+    m_wasTouchPressed = m_isTouchPressed;
 }

@@ -21,17 +21,17 @@ enum class GameState {
 class GameScreen : public Screen {
 private:
     // initialize board
-    Board chessBoard;
+    Board m_board;
 
     // initialize current state, turn, and position of piece to be selected
-    GameState currentState = GameState::AWAITING_SELECTION;
-    PieceColor currentTurn = PieceColor::LIGHT;
-    int selectedX = -1; // invalid value as a placeholder 
-    int selectedY = -1;
+    GameState m_currentState = GameState::AWAITING_SELECTION;
+    PieceColor m_currentTurn = PieceColor::LIGHT;
+    int m_selectedX = -1; // invalid value as a placeholder 
+    int m_selectedY = -1;
 
     // track if the screen was already pressed on the previous frame
-    bool wasTouchPressed = false;
-    bool isTouchPressed;
+    bool m_wasTouchPressed = false;
+    bool m_isTouchPressed;
 public:
     virtual ScreenType update() override;
     virtual void draw() override; 

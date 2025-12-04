@@ -12,7 +12,7 @@
 #include "screen/Screen.h"
 #include "screen/MenuScreen.h"
 #include "screen/GameScreen.h"
-#include "screen/StatisticsScreen.h"
+#include "screen/SettingsScreen.h"
 #include "screen/InstructionsScreen.h"
 #include "screen/CreditsScreen.h"
 #include <iostream>
@@ -34,8 +34,8 @@ int main() {
                 case ScreenType::GAME:
                     currentScreen = std::make_unique<GameScreen>();
                     break;
-                case ScreenType::STATISTICS:
-                    currentScreen = std::make_unique<StatisticsScreen>();
+                case ScreenType::SETTINGS:
+                    currentScreen = std::make_unique<SettingsScreen>();
                     break;
                 case ScreenType::INSTRUCTIONS:
                     currentScreen = std::make_unique<InstructionsScreen>();

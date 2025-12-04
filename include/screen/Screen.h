@@ -12,7 +12,7 @@ enum class ScreenType {
     NONE, // Stay on the current screen
     MENU,
     GAME,
-    STATISTICS,
+    SETTINGS,
     INSTRUCTIONS,
     CREDITS,
     EXIT

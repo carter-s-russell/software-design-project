@@ -20,7 +20,7 @@ private:
     
     // Y-coordinates for the 4 buttons
     const int BTN_PLAY_Y = 40;
-    const int BTN_STATS_Y = 80;
+    const int BTN_SETTINGS_Y = 80;
     const int BTN_INSTR_Y = 120;
     const int BTN_CREDITS_Y = 160;
     const int BTN_QUIT_Y = 200;

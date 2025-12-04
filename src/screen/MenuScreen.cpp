@@ -14,11 +14,11 @@ ScreenType MenuScreen::update() {
             return ScreenType::GAME;
         }
 
-        // 2. Statistics Button
+        // 2. Settings Button
         if (x >= BTN_X && x <= BTN_X + BTN_WIDTH && 
-            y >= BTN_STATS_Y && y <= BTN_STATS_Y + BTN_HEIGHT) {
+            y >= BTN_SETTINGS_Y && y <= BTN_SETTINGS_Y + BTN_HEIGHT) {
             while(LCD.Touch(&x, &y));
-            return ScreenType::STATISTICS;
+            return ScreenType::SETTINGS;
         }
 
         // 3. Instructions Button
@@ -64,7 +64,7 @@ void MenuScreen::draw() {
 
     // Draw all 4 buttons
     drawButton(BTN_PLAY_Y, "Play Game");
-    drawButton(BTN_STATS_Y, "Statistics");
+    drawButton(BTN_SETTINGS_Y, "Settings");
     drawButton(BTN_INSTR_Y, "Instructions");
     drawButton(BTN_CREDITS_Y, "Credits");
     drawButton(BTN_QUIT_Y, "Quit");

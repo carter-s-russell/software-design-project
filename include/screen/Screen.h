@@ -8,6 +8,8 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
+#include "FEHLCD.h"
+
 enum class ScreenType {
     NONE, // Stay on the current screen
     MENU,
@@ -19,6 +21,20 @@ enum class ScreenType {
 };
 
 class Screen {
+protected:
+    // Constants for layout
+    const int SCREEN_WIDTH = 320;
+    const int CHAR_WIDTH = 12; 
+
+    void centerText(const char* text, int y) {
+        int len = 0;
+        while(text[len] != '\0') len++; // Calculate string length
+        
+        int textWidth = len * CHAR_WIDTH;
+        int x = (SCREEN_WIDTH - textWidth) / 2;
+        
+        LCD.WriteAt(text, x, y);
+    }
 public:
     virtual ~Screen() {}
 

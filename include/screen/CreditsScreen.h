@@ -23,10 +23,20 @@ public:
     }
 
     void draw() override {
-        // sets the background to black
         LCD.Clear(BLACK);
+
+        LCD.SetFontColor(YELLOW);
+        centerText("=== CREDITS ===", 20);
+
         LCD.SetFontColor(WHITE);
-        LCD.WriteAt("Credits go here", 25, 25);
+        centerText("Created By:", 80);
+        
+        LCD.SetFontColor(CYAN); 
+        centerText("Carter Russell", 110);
+        centerText("Oliver Martin", 140);
+
+        LCD.SetFontColor(GRAY);
+        centerText("(Click to Return)", 210);
     }
 };
 

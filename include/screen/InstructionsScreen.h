@@ -23,11 +23,24 @@ public:
     }
 
     void draw() override {
-        // sets the background to black
         LCD.Clear(BLACK);
+
+        LCD.SetFontColor(YELLOW);
+        centerText("=== HOW TO PLAY ===", 20);
+
         LCD.SetFontColor(WHITE);
-        LCD.WriteAt("Instructions go here", 25, 25);
-    }
+        
+        centerText("1. Select a piece", 60);
+        centerText("to see moves.", 80);
+
+        centerText("2. Click a dot", 110);
+        centerText("to move there.", 130);
+
+        centerText("3. Capture enemy", 160);
+        centerText("Kings to win!", 180);
+
+        LCD.SetFontColor(GRAY);
+        centerText("(Click to Return)", 215);    }
 };
 
 #endif // INSTRUCTIONSSCREEN_H

@@ -15,14 +15,14 @@ class MenuScreen : public Screen {
 private:
     // Define button constants for easy adjustments
     const int BTN_WIDTH = 200;
-    const int BTN_HEIGHT = 30;
+    const int BTN_HEIGHT = 25;
     const int BTN_X = (320 - BTN_WIDTH) / 2; // Center horizontally (60)
     
     // Y-coordinates for the 4 buttons
-    const int BTN_PLAY_Y = 40;
-    const int BTN_SETTINGS_Y = 80;
-    const int BTN_INSTR_Y = 120;
-    const int BTN_CREDITS_Y = 160;
+    const int BTN_PLAY_Y = 60;
+    const int BTN_SETTINGS_Y = 95;
+    const int BTN_INSTR_Y = 130;
+    const int BTN_CREDITS_Y = 165;
     const int BTN_QUIT_Y = 200;
 public:
     virtual ScreenType update() override;

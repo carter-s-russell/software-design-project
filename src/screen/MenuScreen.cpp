@@ -47,25 +47,68 @@ ScreenType MenuScreen::update() {
 }
 
 void MenuScreen::draw() {
+    // --- 1. Background & Border ---
     LCD.Clear(BLACK);
     
-    // Draw Title
-    LCD.SetFontColor(WHITE);
-    LCD.WriteAt("CHESS GAME", 100, 10);
+    // Draw a double gold border around the screen
+    LCD.SetFontColor(GOLD); //
+    LCD.DrawRectangle(5, 5, 310, 230);
+    LCD.DrawRectangle(8, 8, 304, 224);
 
-    // Helper lambda to draw a button
-    auto drawButton = [&](int y, const char* label) {
-        LCD.SetFontColor(GRAY);
+    // --- 2. Title Section ---
+    LCD.SetFontColor(WHITE);
+    // Use the helper from Screen.h to center the main title
+    centerText("CHESS", 15); 
+    
+    LCD.SetFontColor(GRAY);
+    centerText("Proteus Simulator ver.", 35); // Subtitle
+
+    // --- 3. Button Styling Helper ---
+    auto drawFancyButton = [&](int y, const char* label) {
+        // A. Draw Shadow (Offset by +3 pixels)
+        LCD.SetFontColor(DARKGRAY);
+        LCD.FillRectangle(BTN_X + 3, y + 3, BTN_WIDTH, BTN_HEIGHT);
+
+        // B. Draw Main Button Body
+        LCD.SetFontColor(ROYALBLUE); 
         LCD.FillRectangle(BTN_X, y, BTN_WIDTH, BTN_HEIGHT);
+
+        // C. Draw Button Border
         LCD.SetFontColor(WHITE);
-        // Simple centering logic: X + 10 padding
-        LCD.WriteAt(label, BTN_X + 10, y + 7);
+        LCD.DrawRectangle(BTN_X, y, BTN_WIDTH, BTN_HEIGHT);
+
+        // D. Center Text INSIDE the Button
+        // (We calculate relative to BTN_WIDTH, not Screen Width)
+        int len = 0; 
+        while(label[len] != '\0') len++;
+        
+        int textWidth = len * 12; // Approx width (12px per char)
+        int textX = BTN_X + (BTN_WIDTH - textWidth) / 2;
+        int textY = y + (BTN_HEIGHT / 2) - 6; // Center vertically (approx)
+
+        LCD.WriteAt(label, textX, textY);
     };
 
-    // Draw all 4 buttons
-    drawButton(BTN_PLAY_Y, "Play Game");
-    drawButton(BTN_SETTINGS_Y, "Settings");
-    drawButton(BTN_INSTR_Y, "Instructions");
-    drawButton(BTN_CREDITS_Y, "Credits");
-    drawButton(BTN_QUIT_Y, "Quit");
+    // --- 4. Draw All Buttons ---
+    drawFancyButton(BTN_PLAY_Y, "Play Game");
+    drawFancyButton(BTN_SETTINGS_Y, "Settings");
+    drawFancyButton(BTN_INSTR_Y, "Instructions");
+    drawFancyButton(BTN_CREDITS_Y, "Credits");
+    
+    // Make the Quit button red to distinguish it
+    auto drawQuitButton = [&](int y, const char* label) {
+        LCD.SetFontColor(DARKGRAY); // Shadow
+        LCD.FillRectangle(BTN_X + 3, y + 3, BTN_WIDTH, BTN_HEIGHT);
+        LCD.SetFontColor(FIREBRICK); // Main Body (Red)
+        LCD.FillRectangle(BTN_X, y, BTN_WIDTH, BTN_HEIGHT);
+        LCD.SetFontColor(WHITE); // Border
+        LCD.DrawRectangle(BTN_X, y, BTN_WIDTH, BTN_HEIGHT);
+        
+        // Simple centering logic repeated
+        int len = 0; while(label[len] != '\0') len++;
+        int textX = BTN_X + (BTN_WIDTH - (len * 12)) / 2;
+        LCD.WriteAt(label, textX, y + (BTN_HEIGHT/2) - 6);
+    };
+
+    drawQuitButton(BTN_QUIT_Y, "Quit");
 }

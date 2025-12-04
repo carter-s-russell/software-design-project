@@ -2,6 +2,19 @@
 #include "FEHLCD.h"
 
 ScreenType GameScreen::update() {
+    // allow user to go back to menu after a checkmate or stalemate
+    PieceColor oppCol = (m_currentTurn == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;
+    bool inCheck = m_board.isCheck(oppCol);
+    bool canMove = m_board.anyValidMoves(m_currentTurn);
+    if ( (inCheck && !canMove) || (!inCheck && !canMove) ){
+        int x, y;
+        while (LCD.Touch(&x, &y)) {}
+        if (LCD.Touch(&x, &y)) {
+            while (LCD.Touch(&x, &y)) {}
+            return ScreenType::MENU;
+        }
+    }
+
     // lambda function for pixel to coordinate
     auto pixelToCoord = [](int pixel) {
         return pixel / SQUARE_SIZE;

@@ -17,6 +17,7 @@
 #include "screen/CreditsScreen.h"
 #include <iostream>
 
+double g_selectedTime = 300.0;
 
 int main() {
     std::unique_ptr<Screen> currentScreen = std::make_unique<MenuScreen>();

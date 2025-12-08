@@ -21,11 +21,12 @@ ScreenType GameScreen::update() {
     bool canMove = m_board.anyValidMoves(m_currentTurn);
     if ( (inCheck && !canMove) || (!inCheck && !canMove) || m_lightTime == 0 || m_darkTime == 0){
         int x, y;
-        while (LCD.Touch(&x, &y)) {}
         if (LCD.Touch(&x, &y)) {
             while (LCD.Touch(&x, &y)) {}
-            return ScreenType::MENU;
         }
+        while(!LCD.Touch(&x, &y)) {}
+        while(LCD.Touch(&x, &y)) {}
+        return ScreenType::MENU;
     }
 
     // there is no checkmate or stalemate present, so continue with next move
@@ -147,23 +148,52 @@ void GameScreen::draw() {
     drawPlayerBlock(10, "DARK", m_darkTime, m_currentTurn == PieceColor::DARK);
     drawPlayerBlock(180, "LIGHT", m_lightTime, m_currentTurn == PieceColor::LIGHT);
 
-    // calculate status
-    PieceColor oppCol = (m_currentTurn == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;
+    PieceColor oppCol = (m_currentTurn == PieceColor::LIGHT) ? PieceColor::DARK : PieceColor::LIGHT;  
     bool inCheck = m_board.isCheck(oppCol);
     bool canMove = m_board.anyValidMoves(m_currentTurn);
 
     int statusY = 100;
-    LCD.SetFontColor(RED);
+    bool gameOver = false;
+    const char* winner = "";
+    const char* reason = "";
 
-    if (inCheck && canMove) {
-        LCD.WriteAt("CHECK!", SIDEBAR_X, statusY);
+    // test if game is over
+    if (m_lightTime <= 0) {
+        gameOver = true;
+        winner = "DARK";
+        reason = "TIME!";
+    } else if (m_darkTime <= 0) {
+        gameOver = true;
+        winner = "LIGHT";
+        reason = "TIME!";
     } else if (inCheck && !canMove) {
-        LCD.WriteAt("CHECK", SIDEBAR_X, statusY);
-        LCD.WriteAt("MATE!", SIDEBAR_X, statusY + 20);
+        gameOver = true;
+        winner = (m_currentTurn == PieceColor::LIGHT) ? "DARK" : "LIGHT";
+        reason = "MATE!";
     } else if (!inCheck && !canMove) {
-        LCD.SetFontColor(YELLOW);
-        LCD.WriteAt("STALE", SIDEBAR_X, statusY);
-        LCD.WriteAt("MATE", SIDEBAR_X, statusY + 20);
+        gameOver = true;
+        winner = "DRAW"; 
+        reason = "STALE!";
+    }
+
+    // draw game status if the game ends
+    if (gameOver) {
+        LCD.SetFontColor(RED);
+        
+        if (winner == "DRAW") {
+            LCD.SetFontColor(YELLOW);
+            LCD.WriteAt("STALE", SIDEBAR_X, statusY);
+            LCD.WriteAt("MATE", SIDEBAR_X, statusY + 20);
+        } else {
+            LCD.WriteAt(winner, SIDEBAR_X, statusY);
+            LCD.WriteAt("WINS!", SIDEBAR_X, statusY + 20);
+            
+            LCD.SetFontColor(ORANGE);
+            LCD.WriteAt(reason, SIDEBAR_X, statusY + 45);
+        }
+    } else if (inCheck) {
+        LCD.SetFontColor(RED);
+        LCD.WriteAt("CHECK!", SIDEBAR_X, statusY);
     }
 
     LCD.Update();

@@ -26,7 +26,6 @@ ScreenType SettingsScreen::update() {
 
         // 3. Check "Back / Save" Button
         else if (y >= BACK_BTN_Y && y <= BACK_BTN_Y + 30) {
-            // SAVE THE TIME!
             // Convert minutes to seconds for the game logic
             g_selectedTime = m_timeOptions[m_currentIndex] * 60.0;
             return ScreenType::MENU;
